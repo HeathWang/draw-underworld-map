@@ -1,11 +1,51 @@
 import React from 'react';
-import './App.css';
-import {Button} from "antd";
+import {UserOutlined,} from '@ant-design/icons';
+import {Layout, Menu, theme} from 'antd';
+import {Link, useLocation, useNavigate} from 'react-router-dom';
+import AppRoutes from "./router/AppRoutes";
+import MenuItem from "antd/lib/menu/MenuItem";
 
-const App: React.FC = () => (
-  <div className="App">
-    <Button type="primary">Button</Button>
-  </div>
-);
+const {Header, Content, Footer, Sider} = Layout;
+
+const App: React.FC = () => {
+    const {
+        token: {colorBgContainer},
+    } = theme.useToken();
+
+    const [collapsed, setCollapsed] = React.useState(false);
+    const location = useLocation();
+    const navigator = useNavigate();
+
+    return (
+        <Layout hasSider style={{ minHeight: '100vh' }}>
+            <Sider
+                collapsible
+                collapsed={collapsed}
+                onCollapse={setCollapsed}
+            >
+                <div className="demo-logo-vertical"/>
+                <Menu theme="dark" mode="inline" defaultSelectedKeys={['2']}>
+                    <MenuItem key={"2"} icon={<UserOutlined/>} title={"地下尖塔"}>
+                        <Link to="/undermap">地下尖塔绘制</Link>
+                    </MenuItem>
+                    <MenuItem key={"1"} icon={<UserOutlined/>} title={"名人堂"}>
+                        <Link to="/person">名人堂</Link>
+                    </MenuItem>
+                </Menu>
+            </Sider>
+
+            <Layout >
+
+                <Content style={{ margin: '0 16px' }}>
+                    <div style={{padding: 24, textAlign: 'center', background: colorBgContainer}}>
+                        <AppRoutes></AppRoutes>
+                    </div>
+                </Content>
+                <Footer style={{textAlign: 'center'}}>BND同盟</Footer>
+            </Layout>
+        </Layout>
+
+    );
+};
 
 export default App;
