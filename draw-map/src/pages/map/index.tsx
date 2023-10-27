@@ -729,16 +729,30 @@ const MapPage: React.FC = () => {
             />
 
 
-            <Button type={"primary"} size={"large"}
-                    onClick={handleInputData}
-            >
-                开始透视
-            </Button>
+            <div className="button" >
+                <Button type={"primary"} size={"large"} style={{width: "100%"}}
+                        onClick={handleInputData}
+                >
+                    开始透视
+                </Button>
+            </div>
+
 
             <div className="map-container">
                 {showMapTiles != null && showMapTiles.length > 0 && renderMap()
 
                 }
+            </div>
+            <div className="map-tips">
+                <div className="map-tips__boss">
+                <li>棕龙	100文书+铜球	</li>
+                <li>绿龙	皇契+SS钥匙	</li>
+                <li>蓝龙	3宝石钥匙+黄球</li>
+                <li>紫龙	SS钥匙+银球	</li>
+                <li>黄龙	10诅咒符文+小篮球	</li>
+                <li>红龙	小红球+金球	</li>
+                <li>钻龙	50龙石+小爪牙	</li>
+                </div>
             </div>
         </div>
     );

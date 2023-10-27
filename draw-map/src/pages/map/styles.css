@@ -13,4 +13,28 @@
     flex-direction: row;
 }
 
+.button {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    width: 100%;
+}
+
+.map-tips {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.map-tips__boss {
+    /*width: 40%;*/
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: medium;
+    font-weight: 400;
+    color: coral;
+}
+
+
 
