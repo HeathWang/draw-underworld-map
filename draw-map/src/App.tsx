@@ -41,7 +41,14 @@ const App: React.FC = () => {
                         <AppRoutes></AppRoutes>
                     </div>
                 </Content>
-                <Footer style={{textAlign: 'center'}}>BND同盟</Footer>
+                <Footer style={{textAlign: 'center'}}>
+                    <div>
+                        宝石战争-BND同盟会
+                    </div>
+                    <div>
+                        群号:468647928
+                    </div>
+                </Footer>
             </Layout>
         </Layout>
 

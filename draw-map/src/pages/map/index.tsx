@@ -1,6 +1,7 @@
 import React from "react";
 import { Input, Button, notification } from "antd";
 import {Gate, GemUnderWorldModel, BossRoom, TreasureRoom, MapBlock} from "../../model/gemUnderWorldModel";
+import {genShownMapTiles} from "../../logic/mapDataHandle";
 
 const { TextArea } = Input;
 
@@ -617,8 +618,8 @@ const MapPage: React.FC = () => {
                     for (let j = 0; j < map[i].length; j++) {
                         mapObj.push({
                             blockValue: map[i][j],
-                            x: i,
-                            y: j,
+                            x: j,
+                            y: i,
                         });
                     }
                 }
@@ -669,6 +670,9 @@ const MapPage: React.FC = () => {
                     firstNode: firstNode,
                 };
                 console.log(`underWorldModel: ${JSON.stringify(underWorldModel, null, 2)}`);
+
+                const showMapTiles = genShownMapTiles(underWorldModel);
+                console.log(`${JSON.stringify(showMapTiles, null, 2)}`);
             } else {
                 console.log("input is null");
             }
