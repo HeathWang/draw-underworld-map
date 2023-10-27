@@ -10,6 +10,7 @@ const Tile: React.FC<TileProps> = (props) => {
 
     const style = {
         backgroundColor: props.showMapTile.background,
+        fontSize: props.showMapTile.type === 'treasure' ? "10px" : "12px"
     }
 
     return (

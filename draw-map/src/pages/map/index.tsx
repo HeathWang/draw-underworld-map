@@ -670,10 +670,10 @@ const MapPage: React.FC = () => {
                     treasure: treasureRoomObj,
                     firstNode: firstNode,
                 };
-                // console.log(`underWorldModel: ${JSON.stringify(underWorldModel, null, 2)}`);
+                console.log(`${JSON.stringify(underWorldModel, null, 2)}`);
 
                 const showMapTiles = genShownMapTiles(underWorldModel);
-                console.log(`${JSON.stringify(showMapTiles, null, 2)}`);
+                // console.log(`${JSON.stringify(showMapTiles, null, 2)}`);
                 setShowMapTiles(showMapTiles);
             } else {
                 console.log("input is null");

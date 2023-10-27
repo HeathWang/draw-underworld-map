@@ -1,4 +1,4 @@
-import {BossRoom, Gate, GemUnderWorldModel} from "../model/gemUnderWorldModel";
+import {BossRoom, Gate, GemUnderWorldModel, TreasureRoom} from "../model/gemUnderWorldModel";
 import {ShowMapTile} from "../model/showMapTile";
 
 
@@ -45,6 +45,18 @@ export const genShownMapTiles = (originData: GemUnderWorldModel): ShowMapTile[] 
                     type: 'boss',
                     title: getBossMapName(bossRoom),
                     background: getBossMapBackground(bossRoom),
+                    indexValue: tileStr,
+                });
+                return;
+            }
+
+            // find treasure
+            const treasureRoom = treasure.find(treasure => `${treasure.node}` === tileStr);
+            if (treasureRoom != null) {
+                shownMapTiles.push({
+                    type: 'treasure',
+                    title: getTreasureMapName(treasureRoom),
+                    background: '#c3df79',
                     indexValue: tileStr,
                 });
                 return;
@@ -104,5 +116,57 @@ const bossMappingColor: Record<string, string> = {
 
 const getBossMapBackground = (boss: BossRoom): string => {
     return bossMappingColor[`${boss.category}`];
+}
+
+/**
+ *          普通	    稀有	    罕见	    史诗	    传奇	    神话
+ * 蓝守卫	16167	16168	16169	16170	16171	16172
+ * 绿守卫	16173	16174	16175	16176	16177	16178
+ * 红守卫	16179	16180	16181	16182	16183	16184
+ * 黄守卫	16185	16186	16187	16188	16189	16190
+ * 紫守卫	16191	16192	16193	16194	16195	16196
+ * 棕守卫	16197	16198	16199	16200	16201	16202
+ */
+const treasureMapping: Record<string, string> = {
+    "16167": "蓝普通守卫",
+    "16168": "蓝稀有守卫",
+    "16169": "蓝罕见守卫",
+    "16170": "蓝史诗守卫",
+    "16171": "蓝传奇守卫",
+    "16172": "蓝神话守卫",
+    "16173": "绿普通守卫",
+    "16174": "绿稀有守卫",
+    "16175": "绿罕见守卫",
+    "16176": "绿史诗守卫",
+    "16177": "绿传奇守卫",
+    "16178": "绿神话守卫",
+    "16179": "红普通守卫",
+    "16180": "红稀有守卫",
+    "16181": "红罕见守卫",
+    "16182": "红史诗守卫",
+    "16183": "红传奇守卫",
+    "16184": "红神话守卫",
+    "16185": "黄普通守卫",
+    "16186": "黄稀有守卫",
+    "16187": "黄罕见守卫",
+    "16188": "黄史诗守卫",
+    "16189": "黄传奇守卫",
+    "16190": "黄神话守卫",
+    "16191": "紫普通守卫",
+    "16192": "紫稀有守卫",
+    "16193": "紫罕见守卫",
+    "16194": "紫史诗守卫",
+    "16195": "紫传奇守卫",
+    "16196": "紫神话守卫",
+    "16197": "棕普通守卫",
+    "16198": "棕稀有守卫",
+    "16199": "棕罕见守卫",
+    "16200": "棕史诗守卫",
+    "16201": "棕传奇守卫",
+    "16202": "棕神话守卫",
+}
+
+const getTreasureMapName = (treasure: TreasureRoom): string => {
+    return treasureMapping[`${treasure.category}`];
 }
 
