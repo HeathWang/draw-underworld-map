@@ -1,19 +1,20 @@
 import React from "react";
-import { Input, Button, notification } from "antd";
-import {Gate, GemUnderWorldModel, BossRoom, TreasureRoom, MapBlock} from "../../model/gemUnderWorldModel";
+import {Button, Input, notification} from "antd";
+import {BossRoom, Gate, GemUnderWorldModel, MapBlock, TreasureRoom} from "../../model/gemUnderWorldModel";
 import {genShownMapTiles} from "../../logic/mapDataHandle";
+import {ShowMapTile} from "../../model/showMapTile";
+import Tile from "./tile";
+import "./styles.css";
 
-const { TextArea } = Input;
+const {TextArea} = Input;
 
 const MapPage: React.FC = () => {
 
     const inputRef = React.useRef<string | null>(null);
     const [api, contextHolder] = notification.useNotification();
+    const [showMapTiles, setShowMapTiles] = React.useState<ShowMapTile[]>([]);
 
     const handleInputData = () => {
-        // console.log("handleInputData");
-        // console.log(e.target.value);
-        // convert input string to json object
 
         try {
             if (inputRef.current != null) {
@@ -643,7 +644,7 @@ const MapPage: React.FC = () => {
                     const roomValue = bossRoomInfo[bossRoomKeys[i]];
                     bossRoomObj.push({
                         category: roomValue,
-                        node:  parseInt(bossRoomKeys[i])
+                        node: parseInt(bossRoomKeys[i])
 
                     });
                 }
@@ -655,7 +656,7 @@ const MapPage: React.FC = () => {
                     const roomValue = treasureRooms[treasureRoomKeys[i]];
                     treasureRoomObj.push({
                         category: roomValue,
-                        node:  parseInt(treasureRoomKeys[i])
+                        node: parseInt(treasureRoomKeys[i])
 
                     });
                 }
@@ -669,14 +670,14 @@ const MapPage: React.FC = () => {
                     treasure: treasureRoomObj,
                     firstNode: firstNode,
                 };
-                console.log(`underWorldModel: ${JSON.stringify(underWorldModel, null, 2)}`);
+                // console.log(`underWorldModel: ${JSON.stringify(underWorldModel, null, 2)}`);
 
                 const showMapTiles = genShownMapTiles(underWorldModel);
                 console.log(`${JSON.stringify(showMapTiles, null, 2)}`);
+                setShowMapTiles(showMapTiles);
             } else {
                 console.log("input is null");
             }
-
 
 
         } catch (e) {
@@ -685,9 +686,41 @@ const MapPage: React.FC = () => {
 
     }
 
+    const renderRow = (rowData: ShowMapTile[]) => {
+        return (
+        <div className="map-container__map-row" >
+            {
+                rowData.map((tile, index) => {
+                    return <Tile showMapTile={tile} />
+                })
+            }
+        </div>
+        );
+    }
+
+    const renderMap = () => {
+
+        // 定义一个空数组，用于存储拆分后的子数组
+        const result: ShowMapTile[][] = [];
+
+        // 使用循环将数据拆分成包含 20 个元素的子数组
+        for (let i = 0; i < showMapTiles.length; i += 20) {
+            const chunk = showMapTiles.slice(i, i + 20);
+            result.push(chunk);
+        }
+
+
+        return (
+            result.map((row, rowIndex) => (
+                // 对 result 数组进行映射，row 代表每一行的数据
+                renderRow(row)
+            ))
+        );
+    }
+
     return (
         <div>
-            <div>请将抓包获取的数据全选，粘贴到下面的输入框</div>
+            <div>请将抓包获取的json数据全选，粘贴到下面的输入框，点击开始透视按钮</div>
             <TextArea
                 rows={4}
                 onChange={e => {
@@ -697,10 +730,16 @@ const MapPage: React.FC = () => {
 
 
             <Button type={"primary"} size={"large"}
-                onClick={handleInputData}
+                    onClick={handleInputData}
             >
                 开始透视
             </Button>
+
+            <div className="map-container">
+                {showMapTiles != null && showMapTiles.length > 0 && renderMap()
+
+                }
+            </div>
         </div>
     );
 };

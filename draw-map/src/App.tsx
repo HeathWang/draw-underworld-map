@@ -4,6 +4,7 @@ import {Layout, Menu, theme} from 'antd';
 import {Link, useLocation, useNavigate} from 'react-router-dom';
 import AppRoutes from "./router/AppRoutes";
 import MenuItem from "antd/lib/menu/MenuItem";
+import './App.css';
 
 const {Header, Content, Footer, Sider} = Layout;
 
@@ -36,17 +37,17 @@ const App: React.FC = () => {
 
             <Layout >
 
-                <Content style={{ margin: '0 16px' }}>
-                    <div style={{padding: 24, textAlign: 'center', background: colorBgContainer}}>
+                <Content style={{ margin: '0 6px' }}>
+                    <div style={{padding: 6, textAlign: 'center', background: colorBgContainer}}>
                         <AppRoutes></AppRoutes>
                     </div>
                 </Content>
                 <Footer style={{textAlign: 'center'}}>
-                    <div>
+                    <div className="global-footer">
                         宝石战争-BND同盟会
                     </div>
                     <div>
-                        群号:468647928
+                        群号:468647928 coding by HeathWang NL
                     </div>
                 </Footer>
             </Layout>

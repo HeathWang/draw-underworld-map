@@ -27,7 +27,7 @@ export const genShownMapTiles = (originData: GemUnderWorldModel): ShowMapTile[] 
             }
 
             // find gate
-            const gate = gates.find(gate => gate.node === index)
+            const gate = gates.find(gate => `${gate.node}` === tileStr)
             if (gate != null) {
                 shownMapTiles.push({
                     type: 'gate',
@@ -39,12 +39,12 @@ export const genShownMapTiles = (originData: GemUnderWorldModel): ShowMapTile[] 
             }
 
             // find boss
-            const bossRoom = boss.find(boss => boss.node === index);
+            const bossRoom = boss.find(boss => `${boss.node}` === tileStr);
             if (bossRoom != null) {
                 shownMapTiles.push({
                     type: 'boss',
                     title: getBossMapName(bossRoom),
-                    background: '#7fd6e4',
+                    background: getBossMapBackground(bossRoom),
                     indexValue: tileStr,
                 });
                 return;
@@ -90,5 +90,19 @@ const bossMapping: Record<string, string> = {
 }
 const getBossMapName = (boss: BossRoom): string => {
     return bossMapping[`${boss.category}`];
+}
+
+const bossMappingColor: Record<string, string> = {
+    '16165': '#cf8a5a',
+    '16161': '#b5d594',
+    '16160': '#3fb8e9',
+    '16164': '#8b59af',
+    '16163': '#ebec55',
+    '16162': '#f43d3c',
+    '16166': '#1497d1',
+}
+
+const getBossMapBackground = (boss: BossRoom): string => {
+    return bossMappingColor[`${boss.category}`];
 }
 
