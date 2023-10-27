@@ -1,12 +1,14 @@
 import {BossRoom, Gate, GemUnderWorldModel, TreasureRoom} from "../model/gemUnderWorldModel";
 import {ShowMapTile} from "../model/showMapTile";
+import {imageR} from "../resource/imageR";
 
 
 export const genShownMapTiles = (originData: GemUnderWorldModel): ShowMapTile[] => {
     const {map, gates, firstNode, treasure, boss} = originData;
     let shownMapTiles: ShowMapTile[] = [];
     map.forEach((block, index) => {
-        const tileStr = `${block.y}${block.x.toString().padStart(2, '0')}`;
+        let tileStr = `${block.y}${block.x.toString().padStart(2, '0')}`;
+        tileStr = tileStr.replace(/^0+/, '')
         const tileValue = parseInt(`${block.y}${block.x.toString().padStart(2, '0')}`);
         if (block.blockValue === 15) {
             shownMapTiles.push({
@@ -27,31 +29,33 @@ export const genShownMapTiles = (originData: GemUnderWorldModel): ShowMapTile[] 
             }
 
             // find gate
-            const gate = gates.find(gate => `${gate.node}` === tileStr)
+            const gate = gates.find(gate => `${gate.node}` === `${tileValue}`)
             if (gate != null) {
                 shownMapTiles.push({
                     type: 'gate',
                     title: getGateMapName(gate),
-                    background: '#ef9736',
+                    background: '#f5cdab',
                     indexValue: tileStr,
+                    icon: getGateIcon(gate),
                 });
                 return;
             }
 
             // find boss
-            const bossRoom = boss.find(boss => `${boss.node}` === tileStr);
+            const bossRoom = boss.find(boss => `${boss.node}` === `${tileValue}`);
             if (bossRoom != null) {
                 shownMapTiles.push({
                     type: 'boss',
                     title: getBossMapName(bossRoom),
                     background: getBossMapBackground(bossRoom),
                     indexValue: tileStr,
+                    icon: getBossIcon(bossRoom),
                 });
                 return;
             }
 
             // find treasure
-            const treasureRoom = treasure.find(treasure => `${treasure.node}` === tileStr);
+            const treasureRoom = treasure.find(treasure => `${treasure.node}` === `${tileValue}`);
             if (treasureRoom != null) {
                 shownMapTiles.push({
                     type: 'treasure',
@@ -75,30 +79,44 @@ export const genShownMapTiles = (originData: GemUnderWorldModel): ShowMapTile[] 
 
 const getGateMapName = (gate: Gate): string => {
     if (gate.index === 0) {
-        return '1棕门';
+        return '门';
     } else if (gate.index === 1) {
-        return '2绿门';
+        return '门';
     } else if (gate.index === 2) {
-        return '3蓝门';
+        return '门';
     } else if (gate.index === 3) {
-        return '4紫门';
+        return '门';
     } else if (gate.index === 4) {
-        return '5黄门';
+        return '门';
     } else if (gate.index === 5) {
-        return '6红门';
+        return '门';
     } else {
         return "";
     }
 }
 
+
+const gateIconsMapping: Record<string, string> = {
+    "0": imageR.t_gray,
+    "1": imageR.t_green,
+    "2": imageR.t_blue,
+    "3": imageR.t_purple,
+    "4": imageR.t_yellow,
+    "5": imageR.t_red,
+}
+
+const getGateIcon = (gate: Gate): string => {
+    return gateIconsMapping[`${gate.index}`];
+}
+
 const bossMapping: Record<string, string> = {
-    '16165': '1棕龙',
-    '16161': '2绿龙',
-    '16160': '3蓝龙',
-    '16164': '4紫龙',
-    '16163': '5黄龙',
-    '16162': '6红龙',
-    '16166': '7钻龙',
+    '16165': '棕龙',
+    '16161': '绿龙',
+    '16160': '蓝龙',
+    '16164': '紫龙',
+    '16163': '黄龙',
+    '16162': '红龙',
+    '16166': '钻龙',
 }
 const getBossMapName = (boss: BossRoom): string => {
     return bossMapping[`${boss.category}`];
@@ -111,11 +129,33 @@ const bossMappingColor: Record<string, string> = {
     '16164': '#8b59af',
     '16163': '#ebec55',
     '16162': '#f43d3c',
-    '16166': '#1497d1',
+    '16166': '#6fefdb',
 }
 
 const getBossMapBackground = (boss: BossRoom): string => {
     return bossMappingColor[`${boss.category}`];
+}
+
+/**
+ *     t_gray: "icons/Troopcardall_Orange.png",
+ *     t_red: "icons/Troopcardall_Red.png",
+ *     t_blue: "icons/Troopcardall_Blue.png",
+ *     t_green: "icons/Troopcardall_Green.png",
+ *     t_yellow: "icons/Troopcardall_Yellow.png",
+ *     t_purple: "icons/Troopcardall_Purple.png",
+ */
+const bossIconsMapping: Record<string, string> = {
+    '16165': imageR.boss_gray,
+    '16161': imageR.boss_green,
+    '16160': imageR.boss_blue,
+    '16164': imageR.boss_purple,
+    '16163': imageR.boss_yellow,
+    '16162': imageR.boss_red,
+    '16166': imageR.chest,
+}
+
+const getBossIcon = (boss: BossRoom): string => {
+    return bossIconsMapping[`${boss.category}`];
 }
 
 /**

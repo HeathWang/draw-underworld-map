@@ -14,11 +14,19 @@ const Tile: React.FC<TileProps> = (props) => {
     }
 
     return (
-        <div className="content"  style={style}>
-            <div className="content__text">
-                {props.showMapTile.title}
+        props.showMapTile.icon != null ?
+            <div className="content-icon" style={style}>
+                <img className="icon" src={props.showMapTile.icon} alt="颜色" />
+                <div className="content-icon__text">
+                    {props.showMapTile.title}
+                </div>
             </div>
-        </div>
+            :
+            <div className="content" style={style}>
+                <div className="content__text">
+                    {props.showMapTile.title}
+                </div>
+            </div>
     );
 }
 

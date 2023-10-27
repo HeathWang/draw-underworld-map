@@ -5,4 +5,5 @@ export interface ShowMapTile {
     title: string,
     background: string,
     indexValue?: string,
+    icon?: string;
 }

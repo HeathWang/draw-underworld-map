@@ -5,6 +5,7 @@ import {genShownMapTiles} from "../../logic/mapDataHandle";
 import {ShowMapTile} from "../../model/showMapTile";
 import Tile from "./tile";
 import "./styles.css";
+import {imageR} from "../../resource/imageR";
 
 const {TextArea} = Input;
 
@@ -82,6 +83,7 @@ const MapPage: React.FC = () => {
                     treasure: treasureRoomObj,
                     firstNode: firstNode,
                 };
+                console.log("111")
                 console.log(`${JSON.stringify(underWorldModel, null, 2)}`);
 
                 const showMapTiles = genShownMapTiles(underWorldModel);
