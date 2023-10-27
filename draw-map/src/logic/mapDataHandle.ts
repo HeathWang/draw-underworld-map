@@ -60,7 +60,7 @@ export const genShownMapTiles = (originData: GemUnderWorldModel): ShowMapTile[] 
                 shownMapTiles.push({
                     type: 'treasure',
                     title: getTreasureMapName(treasureRoom),
-                    background: '#c3df79',
+                    background: getTreasureMapColor(treasureRoom),
                     indexValue: tileStr,
                     icon: imageR.chest_treasure,
                 });
@@ -168,6 +168,7 @@ const getBossIcon = (boss: BossRoom): string => {
  * 紫守卫	16191	16192	16193	16194	16195	16196
  * 棕守卫	16197	16198	16199	16200	16201	16202
  */
+
 const treasureMapping: Record<string, string> = {
     "16167": "蓝普通",
     "16168": "蓝稀有",
@@ -209,5 +210,27 @@ const treasureMapping: Record<string, string> = {
 
 const getTreasureMapName = (treasure: TreasureRoom): string => {
     return treasureMapping[`${treasure.category}`];
+}
+
+
+const treasureEpicCategoryList: number[] = [16170, 16176, 16182, 16188, 16194, 16200];
+const treasureLegendCategoryList: number[] = [16171, 16177, 16183, 16189, 16195, 16201];
+const treasureGodCategoryList: number[] = [16172, 16178, 16184, 16190, 16196, 16202];
+
+const getTreasureMapColor = (treasure: TreasureRoom): string => {
+    const obj = treasureEpicCategoryList.find(item => item === treasure.category);
+    if (obj != null) {
+        return "#ce47c5";
+    }
+
+    if (treasureLegendCategoryList.find(item => item === treasure.category) != null) {
+        return "#ecaf10";
+    }
+
+    if (treasureGodCategoryList.find(item => item === treasure.category) != null) {
+        return "rgba(23,175,151,0.67)";
+    }
+
+    return "#aae3a7"
 }
 
