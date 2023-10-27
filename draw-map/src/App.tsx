@@ -47,7 +47,7 @@ const App: React.FC = () => {
                         宝石战争-BND同盟会
                     </div>
                     <div>
-                        群号:468647928 coding by HeathWang NL
+                        群号:468647928 coding by 猴哥 NL
                     </div>
                 </Footer>
             </Layout>
