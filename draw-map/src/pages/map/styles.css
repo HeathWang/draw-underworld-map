@@ -19,11 +19,19 @@
     width: 100%;
 }
 
+.guide-top {
+    font-size: 30px;
+    font-weight: 900;
+    font-style: italic;
+    color: red;
+}
+
 .map-tips {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: start;
     align-items: flex-start;
+    padding-top: 20px;
 }
 
 .map-tips__boss {
@@ -34,6 +42,19 @@
     font-size: medium;
     font-weight: 400;
     color: coral;
+}
+
+.map-tips__chest {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: medium;
+    font-weight: 400;
+    padding-left: 20px;
+}
+
+.map-tips__chest__sub {
+    padding-bottom: 6px;
 }
 
 

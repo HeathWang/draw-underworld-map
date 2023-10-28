@@ -102,13 +102,13 @@ const MapPage: React.FC = () => {
 
     const renderRow = (rowData: ShowMapTile[]) => {
         return (
-        <div className="map-container__map-row" >
-            {
-                rowData.map((tile, index) => {
-                    return <Tile showMapTile={tile} />
-                })
-            }
-        </div>
+            <div className="map-container__map-row">
+                {
+                    rowData.map((tile, index) => {
+                        return <Tile showMapTile={tile}/>
+                    })
+                }
+            </div>
         );
     }
 
@@ -134,7 +134,9 @@ const MapPage: React.FC = () => {
 
     return (
         <div>
-            <div>请将抓包获取的json数据全选，粘贴到下面的输入框，点击开始透视按钮</div>
+            <div style={{paddingBottom: "4px"}}>
+                <span> 请将抓包获取的json<span className="guide-top">数据全选</span>，粘贴到下面的输入框，点击开始透视按钮</span>
+            </div>
             <TextArea
                 rows={4}
                 onChange={e => {
@@ -143,7 +145,7 @@ const MapPage: React.FC = () => {
             />
 
 
-            <div className="button" >
+            <div className="button">
                 <Button type={"primary"} size={"large"} style={{width: "100%"}}
                         onClick={handleInputData}
                 >
@@ -151,21 +153,37 @@ const MapPage: React.FC = () => {
                 </Button>
             </div>
 
+            {showMapTiles != null && showMapTiles.length > 0 &&
+                <div className="map-container">
+                    {renderMap()}
+                </div>
+            }
 
-            <div className="map-container">
-                {showMapTiles != null && showMapTiles.length > 0 && renderMap()
 
-                }
-            </div>
             <div className="map-tips">
                 <div className="map-tips__boss">
-                <li>棕龙	100文书+铜球	</li>
-                <li>绿龙	皇契+SS钥匙	</li>
-                <li>蓝龙	3宝石钥匙+黄球</li>
-                <li>紫龙	SS钥匙+银球	</li>
-                <li>黄龙	10诅咒符文+小篮球	</li>
-                <li>红龙	小红球+金球	</li>
-                <li>钻龙	50龙石+小爪牙	</li>
+                    <li>棕龙 100文书+铜球</li>
+                    <li>绿龙 皇契+SS钥匙</li>
+                    <li>蓝龙 3宝石钥匙+黄球</li>
+                    <li>紫龙 SS钥匙+银球</li>
+                    <li>黄龙 10诅咒符文+小篮球</li>
+                    <li>红龙 小红球+金球</li>
+                    <li>钻龙 50龙石+小爪牙</li>
+                </div>
+
+                <div className="map-tips__chest">
+                    <div className="map-tips__chest__sub">
+                        宝箱分为普通、稀有、罕见、史诗、传奇、神话<img src={`${imageR.chest_treasure}`}
+                                                                  style={{width: "20px", height: '20px'}}/>
+                    </div>
+                    <div className="map-tips__chest__sub">
+                        <span>史诗以下宝箱以<span style={{background: "#aae3a7"}}>绿色背景</span>标识</span>
+                    </div>
+                    <div className="map-tips__chest__sub">
+                        <span><span style={{background: "#ce47c5"}}>史诗</span>、<span
+                            style={{background: "#ecaf10"}}>传奇</span>、<span
+                            style={{background: "rgba(23,175,151,0.67)"}}>神话</span>以不同背景色标识</span>
+                    </div>
                 </div>
             </div>
         </div>

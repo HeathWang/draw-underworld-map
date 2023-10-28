@@ -13,7 +13,7 @@ const App: React.FC = () => {
         token: {colorBgContainer},
     } = theme.useToken();
 
-    const [collapsed, setCollapsed] = React.useState(false);
+    const [collapsed, setCollapsed] = React.useState(true);
     const location = useLocation();
     const navigator = useNavigate();
 
