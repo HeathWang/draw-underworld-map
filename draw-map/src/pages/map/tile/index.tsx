@@ -16,7 +16,7 @@ const Tile: React.FC<TileProps> = (props) => {
     return (
         props.showMapTile.icon != null ?
             <div className="content-icon" style={style}>
-                <img className="icon" src={props.showMapTile.icon} alt="颜色" />
+                <img className="icon" src={props.showMapTile.icon} alt="" />
                 <div className="content-icon__text">
                     {props.showMapTile.title}
                 </div>

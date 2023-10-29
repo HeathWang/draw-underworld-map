@@ -51,10 +51,26 @@
     font-size: medium;
     font-weight: 400;
     padding-left: 20px;
+    background: beige;
 }
 
 .map-tips__chest__sub {
     padding-bottom: 6px;
+}
+
+.map-tips__path {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: medium;
+    font-weight: 400;
+    padding-left: 20px;
+}
+
+.map-tips__path__doing {
+    text-decoration: line-through;
+    font-size: 30px;
+    font-style: italic;
 }
 
 

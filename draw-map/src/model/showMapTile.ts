@@ -1,9 +1,13 @@
 export {}
 
 export interface ShowMapTile {
-    type: 'path' | 'gate' | 'boss' | 'treasure' | 'start' | 'empty',
+    type: 'gate' | 'boss' | 'treasure' | 'start' | 'path' | 'mainpath' | 'empty',
     title: string,
     background: string,
     indexValue?: string,
-    icon?: string;
+    icon?: string,
+    x: number,
+    y: number,
+
+
 }

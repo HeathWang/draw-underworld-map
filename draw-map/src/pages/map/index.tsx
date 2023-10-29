@@ -6,14 +6,21 @@ import {ShowMapTile} from "../../model/showMapTile";
 import Tile from "./tile";
 import "./styles.css";
 import {imageR} from "../../resource/imageR";
+import {findMapMainPath, testFind} from "../../logic/findPath";
 
 const {TextArea} = Input;
 
 const MapPage: React.FC = () => {
 
     const inputRef = React.useRef<string | null>(null);
-    const [api, contextHolder] = notification.useNotification();
     const [showMapTiles, setShowMapTiles] = React.useState<ShowMapTile[]>([]);
+    const notifyError = () => {
+        notification.error({
+            message: "抓包数据为空或格式错误",
+            description: "请将完整的抓包数据全选粘贴。",
+            duration: 5,
+        })
+    }
 
     const handleInputData = () => {
 
@@ -83,29 +90,36 @@ const MapPage: React.FC = () => {
                     treasure: treasureRoomObj,
                     firstNode: firstNode,
                 };
-                console.log("111")
                 console.log(`${JSON.stringify(underWorldModel, null, 2)}`);
 
-                const showMapTiles = genShownMapTiles(underWorldModel);
+                if (underWorldModel.map.length < 400) {
+                    notifyError();
+                    return;
+                }
+
+                const results = genShownMapTiles(underWorldModel);
                 // console.log(`${JSON.stringify(showMapTiles, null, 2)}`);
-                setShowMapTiles(showMapTiles);
+                setShowMapTiles(results.shownMapTiles);
+                findMapMainPath(underWorldModel, results.shownMapTiles, results.index).then((tiles) => {
+                    setShowMapTiles(tiles);
+                });
             } else {
-                console.log("input is null");
+                notifyError();
             }
 
 
         } catch (e) {
-
+            notifyError();
         }
 
     }
 
-    const renderRow = (rowData: ShowMapTile[]) => {
+    const renderRow = (rowData: ShowMapTile[], index: number) => {
         return (
-            <div className="map-container__map-row">
+            <div className="map-container__map-row" key={`${index}`}>
                 {
                     rowData.map((tile, index) => {
-                        return <Tile showMapTile={tile}/>
+                        return <Tile showMapTile={tile} key={tile.indexValue}/>
                     })
                 }
             </div>
@@ -127,10 +141,11 @@ const MapPage: React.FC = () => {
         return (
             result.map((row, rowIndex) => (
                 // 对 result 数组进行映射，row 代表每一行的数据
-                renderRow(row)
+                renderRow(row, rowIndex)
             ))
         );
     }
+
 
     return (
         <div>
@@ -151,6 +166,7 @@ const MapPage: React.FC = () => {
                 >
                     开始透视
                 </Button>
+                {/*<Button onClick={testPath}>测试</Button>*/}
             </div>
 
             {showMapTiles != null && showMapTiles.length > 0 &&
@@ -184,6 +200,17 @@ const MapPage: React.FC = () => {
                             style={{background: "#ecaf10"}}>传奇</span>、<span
                             style={{background: "rgba(23,175,151,0.67)"}}>神话</span>以不同背景色标识</span>
                     </div>
+                </div>
+
+                <div className="map-tips__path">
+                    <div>
+                        <span>主路径7步到达，在地图上以<span
+                            style={{background: "rgba(225,121,107,0.8)"}}>棕红色标识</span></span>
+                    </div>
+                    <div style={{background: "rgba(225,121,107,0.8)"}}>主路径同时显示跑动小人 <img className="icon"
+                                                                                                   src={imageR.run}
+                                                                                                   alt=""/></div>
+                    <div><span className="map-tips__path__doing">门到boss路线推理开发中...</span></div>
                 </div>
             </div>
         </div>

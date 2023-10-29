@@ -14,5 +14,5 @@ export const imageR = {
     boss_purple: "icons/Liveevents_Underspire_Keystone4.png",
     boss_yellow: "icons/Liveevents_Underspire_Keystone5.png",
     boss_red: "icons/Liveevents_Underspire_Keystone6.png",
-
+    run: "icons/agile.png",
 }

@@ -3,9 +3,10 @@ import {ShowMapTile} from "../model/showMapTile";
 import {imageR} from "../resource/imageR";
 
 
-export const genShownMapTiles = (originData: GemUnderWorldModel): ShowMapTile[] => {
+export const genShownMapTiles = (originData: GemUnderWorldModel): {shownMapTiles: ShowMapTile[], index: Record<string, number>  } => {
     const {map, gates, firstNode, treasure, boss} = originData;
     let shownMapTiles: ShowMapTile[] = [];
+    let gatesIndex: Record<string, number> = {};
     map.forEach((block, index) => {
         let tileStr = `${block.y}${block.x.toString().padStart(2, '0')}`;
         tileStr = tileStr.replace(/^0+/, '')
@@ -16,6 +17,8 @@ export const genShownMapTiles = (originData: GemUnderWorldModel): ShowMapTile[] 
                 title: '',
                 background: 'white',
                 indexValue: tileStr,
+                x: block.x,
+                y: block.y,
             });
         } else {
             if (tileStr === `${firstNode}`) {
@@ -24,19 +27,25 @@ export const genShownMapTiles = (originData: GemUnderWorldModel): ShowMapTile[] 
                     title: '起点',
                     background: '#73d044',
                     indexValue: tileStr,
+                    x:block.x,
+                    y:block.y
                 });
                 return;
             }
 
             // find gate
             const gate = gates.find(gate => `${gate.node}` === `${tileValue}`)
+
             if (gate != null) {
+                gatesIndex[`${gate?.index}`] = index;
                 shownMapTiles.push({
                     type: 'gate',
                     title: getGateMapName(gate),
                     background: '#f5cdab',
                     indexValue: tileStr,
                     icon: getGateIcon(gate),
+                    x: block.x,
+                    y: block.y,
                 });
                 return;
             }
@@ -50,6 +59,8 @@ export const genShownMapTiles = (originData: GemUnderWorldModel): ShowMapTile[] 
                     background: getBossMapBackground(bossRoom),
                     indexValue: tileStr,
                     icon: getBossIcon(bossRoom),
+                    x: block.x,
+                    y: block.y,
                 });
                 return;
             }
@@ -63,6 +74,8 @@ export const genShownMapTiles = (originData: GemUnderWorldModel): ShowMapTile[] 
                     background: getTreasureMapColor(treasureRoom),
                     indexValue: tileStr,
                     icon: imageR.chest_treasure,
+                    x: block.x,
+                    y: block.y,
                 });
                 return;
             }
@@ -72,10 +85,12 @@ export const genShownMapTiles = (originData: GemUnderWorldModel): ShowMapTile[] 
                 title: `${tileValue}`,
                 background: '#d1d1d1',
                 indexValue: tileStr,
+                x: block.x,
+                y: block.y,
             })
         }
     });
-    return shownMapTiles;
+    return {shownMapTiles, index: gatesIndex};
 }
 
 const getGateMapName = (gate: Gate): string => {
