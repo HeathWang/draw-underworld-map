@@ -105,8 +105,12 @@ export const testFind = () => {
     }
 }
 
-export const findMapMainPath = async (mapData: GemUnderWorldModel, mapTileList: ShowMapTile[], gatesIndex: Record<string, number>): Promise<ShowMapTile[]> => {
+// 上右下左对应0123
+
+
+export const findMapMainPath = async (mapData: GemUnderWorldModel, mapTileList: ShowMapTile[], gatesIndex: Record<string, {"node": number, "Dir": number}>): Promise<ShowMapTile[]> => {
     let grids: number[][] = [];
+    let mainPathList: {x: number, y: number}[] = []
     for (let i = 0; i < mapTileList.length; i += 20) {
         const chunk = mapTileList.slice(i, i + 20);
         const list = chunk.map(item => {
@@ -120,11 +124,14 @@ export const findMapMainPath = async (mapData: GemUnderWorldModel, mapTileList: 
     }
 
     const startTile = mapTileList.find(tile => tile.type === 'start');
-    const gate1 = mapTileList[gatesIndex["0"]];
-    const path1 = findSevenStepPath(grids, startTile?.x ?? 0, startTile?.y ?? 0, gate1.x, gate1.y);
+    console.log(`gateIndex: ${JSON.stringify(gatesIndex)}`);
+    const gate1 = mapTileList[`${gatesIndex["0"].node}`];
+    console.log(`gate1: ${JSON.stringify(gate1)}`);
+    const gate1Dir = gatesIndex["0"].Dir;
+    // const path1 = findSevenStepPath(grids, startTile?.x ?? 0, startTile?.y ?? 0, gate1.x, gate1.y);
     // console.log(`path1: ${JSON.stringify(path1)}`)
 
-    const gate2 = mapTileList[gatesIndex["1"]];
+   /* const gate2 = mapTileList[gatesIndex["1"]];
     const path2 = findSevenStepPath(grids, gate1.x, gate1.y, gate2.x, gate2.y);
     // console.log(`path2: ${JSON.stringify(path2)}`)
 
@@ -144,7 +151,7 @@ export const findMapMainPath = async (mapData: GemUnderWorldModel, mapTileList: 
     const path6 = findSevenStepPath(grids, gate5.x, gate5.y, gate6.x, gate6.y);
     // console.log(`path3: ${JSON.stringify(path6)}`)
 
-    let mainPathList: {x: number, y: number}[] = []
+
     if (path1 != null) {
         mainPathList.push(...path1.slice(1, -1));
     }
@@ -167,7 +174,7 @@ export const findMapMainPath = async (mapData: GemUnderWorldModel, mapTileList: 
 
     if (path6 != null) {
         mainPathList.push(...path6.slice(1, -1));
-    }
+    }*/
 
     // console.log(`mainPathList: ${JSON.stringify(mainPathList)}`);
 

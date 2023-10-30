@@ -59,6 +59,7 @@
 }
 
 .map-tips__path {
+    text-decoration: line-through;
     display: flex;
     flex-direction: column;
     align-items: flex-start;

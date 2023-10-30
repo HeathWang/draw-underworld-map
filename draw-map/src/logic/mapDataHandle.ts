@@ -3,10 +3,10 @@ import {ShowMapTile} from "../model/showMapTile";
 import {imageR} from "../resource/imageR";
 
 
-export const genShownMapTiles = (originData: GemUnderWorldModel): {shownMapTiles: ShowMapTile[], index: Record<string, number>  } => {
+export const genShownMapTiles = (originData: GemUnderWorldModel): {shownMapTiles: ShowMapTile[], index: Record<string, {"node": number, "Dir": number}>} => {
     const {map, gates, firstNode, treasure, boss} = originData;
     let shownMapTiles: ShowMapTile[] = [];
-    let gatesIndex: Record<string, number> = {};
+    let gatesIndex: Record<string, {"node": number, "Dir": number}> = {};
     map.forEach((block, index) => {
         let tileStr = `${block.y}${block.x.toString().padStart(2, '0')}`;
         tileStr = tileStr.replace(/^0+/, '')
@@ -37,7 +37,7 @@ export const genShownMapTiles = (originData: GemUnderWorldModel): {shownMapTiles
             const gate = gates.find(gate => `${gate.node}` === `${tileValue}`)
 
             if (gate != null) {
-                gatesIndex[`${gate?.index}`] = index;
+                gatesIndex[`${gate?.index}`] = {"node": index, "Dir": gate.dir};
                 shownMapTiles.push({
                     type: 'gate',
                     title: getGateMapName(gate),
