@@ -9,5 +9,6 @@ export interface ShowMapTile {
     x: number,
     y: number,
 
-
+    selected?: boolean,
+    selectedBackground?: string,
 }
