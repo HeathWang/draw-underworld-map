@@ -202,16 +202,16 @@ const MapPage: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="map-tips__path">
-                    <div>
-                        <span>主路径7步到达，在地图上以<span
-                            style={{background: "rgba(225,121,107,0.8)"}}>棕红色标识</span></span>
-                    </div>
-                    <div style={{background: "rgba(225,121,107,0.8)"}}>主路径同时显示跑动小人 <img className="icon"
-                                                                                                   src={imageR.run}
-                                                                                                   alt=""/></div>
-                    <div><span className="map-tips__path__doing">门到boss路线推理开发中...</span></div>
-                </div>
+                {/*<div className="map-tips__path">*/}
+                {/*    <div>*/}
+                {/*        <span>主路径7步到达，在地图上以<span*/}
+                {/*            style={{background: "rgba(225,121,107,0.8)"}}>棕红色标识</span></span>*/}
+                {/*    </div>*/}
+                {/*    <div style={{background: "rgba(225,121,107,0.8)"}}>主路径同时显示跑动小人 <img className="icon"*/}
+                {/*                                                                                   src={imageR.run}*/}
+                {/*                                                                                   alt=""/></div>*/}
+                {/*    <div><span className="map-tips__path__doing">门到boss路线推理开发中...</span></div>*/}
+                {/*</div>*/}
             </div>
         </div>
     );
