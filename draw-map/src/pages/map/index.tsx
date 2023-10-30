@@ -100,9 +100,9 @@ const MapPage: React.FC = () => {
                 const results = genShownMapTiles(underWorldModel);
                 // console.log(`${JSON.stringify(showMapTiles, null, 2)}`);
                 setShowMapTiles(results.shownMapTiles);
-                findMapMainPath(underWorldModel, results.shownMapTiles, results.index).then((tiles) => {
-                    // setShowMapTiles(tiles);
-                });
+                // findMapMainPath(underWorldModel, results.shownMapTiles, results.index).then((tiles) => {
+                //     // setShowMapTiles(tiles);
+                // });
             } else {
                 notifyError();
             }

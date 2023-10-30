@@ -5,7 +5,7 @@ import {imageR} from "../resource/imageR";
 
 export {}
 
-function findSevenStepPath(grid: number[][], x1: number, y1: number, x2: number, y2: number): { x: number, y: number }[] | null {
+function findSevenStepPath(grid: number[][], x1: number, y1: number, x2: number, y2: number): { x: number, y: number }[][] {
     const rows = grid.length;
     const cols = grid[0].length;
     const maxSteps = 7;
@@ -23,46 +23,41 @@ function findSevenStepPath(grid: number[][], x1: number, y1: number, x2: number,
     // 存储路径的栈
     const pathStack: { x: number, y: number }[] = [];
 
-    function dfs(x: number, y: number, steps: number): { x: number, y: number }[] | null {
+    const paths: { x: number, y: number }[][] = [];
+
+    function dfs(x: number, y: number, steps: number): void {
         if (x === x2 && y === y2 && steps === maxSteps) {
-            return pathStack.slice(); // 找到了7步路径
+            paths.push(pathStack.slice()); // 找到了7步路径
+            return;
         }
 
         if (steps >= maxSteps) {
-            return null; // 超过7步还没找到路径
+            return; // 超过7步还没找到路径
         }
 
         for (let i = 0; i < 4; i++) {
             const newX = x + dx[i];
             const newY = y + dy[i];
 
-            if (newX >= 0 && newX < rows && newY >= 0 && newY < cols && !visited[newX][newY] && grid[newY][newX] === 1) {
-                visited[newX][newY] = true;
-                pathStack.push({ x: newX, y: newY });
-                const result = dfs(newX, newY, steps + 1);
-                visited[newX][newY] = false;
-                pathStack.pop();
-
-                if (result) {
-                    return result;
-                }
+            if (newX >= 0 && newX < cols && newY >= 0 && newY < rows && !visited[newY][newX] && grid[newY][newX] === 1) {
+                visited[newY][newX] = true;
+                pathStack.unshift({ x: newX, y: newY });
+                dfs(newX, newY, steps + 1);
+                visited[newY][newX] = false;
+                pathStack.shift();
             }
         }
-
-        return null;
     }
 
     if (grid[y1][x1] === 1) {
-        pathStack.push({ x: x1, y: y1 });
-        visited[x1][y1] = true;
-        const result = dfs(x1, y1, 0);
-        visited[x1][y1] = false;
-        pathStack.pop();
-        return result;
-    } else {
-        return null;
+        pathStack.unshift({ x: x1, y: y1 });
+        visited[y1][x1] = true;
+        dfs(x1, y1, 0);
     }
+
+    return paths;
 }
+
 
 export const testFind = () => {
     // Example usage:
@@ -128,53 +123,53 @@ export const findMapMainPath = async (mapData: GemUnderWorldModel, mapTileList: 
     const gate1 = mapTileList[`${gatesIndex["0"].node}`];
     console.log(`gate1: ${JSON.stringify(gate1)}`);
     const gate1Dir = gatesIndex["0"].Dir;
-    // const path1 = findSevenStepPath(grids, startTile?.x ?? 0, startTile?.y ?? 0, gate1.x, gate1.y);
-    // console.log(`path1: ${JSON.stringify(path1)}`)
+    const path1 = findSevenStepPath(grids, startTile?.x ?? 0, startTile?.y ?? 0, gate1.x, gate1.y);
+    console.log(`path1: ${JSON.stringify(path1)}`)
 
-   /* const gate2 = mapTileList[gatesIndex["1"]];
-    const path2 = findSevenStepPath(grids, gate1.x, gate1.y, gate2.x, gate2.y);
+    // const gate2 = mapTileList[gatesIndex["1"].node];
+    // const path2 = findSevenStepPath(grids, gate1.x, gate1.y, gate2.x, gate2.y);
     // console.log(`path2: ${JSON.stringify(path2)}`)
-
-    const gate3 = mapTileList[gatesIndex[2]];
-    const path3 = findSevenStepPath(grids, gate2.x, gate2.y, gate3.x, gate3.y);
+    //
+    // const gate3 = mapTileList[gatesIndex[2].node];
+    // const path3 = findSevenStepPath(grids, gate2.x, gate2.y, gate3.x, gate3.y);
     // console.log(`path3: ${JSON.stringify(path3)}`)
+    //
+    // const gate4 = mapTileList[gatesIndex[3].node];
+    // const path4 = findSevenStepPath(grids, gate3.x, gate3.y, gate4.x, gate4.y);
+    // console.log(`path4: ${JSON.stringify(path4)}`)
+    //
+    // const gate5 = mapTileList[gatesIndex[4].node];
+    // const path5 = findSevenStepPath(grids, gate4.x, gate4.y, gate5.x, gate5.y);
+    // console.log(`path5: ${JSON.stringify(path5)}`)
+    //
+    // const gate6 = mapTileList[gatesIndex[5].node];
+    // const path6 = findSevenStepPath(grids, gate5.x, gate5.y, gate6.x, gate6.y);
+    // console.log(`path6: ${JSON.stringify(path6)}`)
+    //
 
-    const gate4 = mapTileList[gatesIndex[3]];
-    const path4 = findSevenStepPath(grids, gate3.x, gate3.y, gate4.x, gate4.y);
-    // console.log(`path3: ${JSON.stringify(path4)}`)
-
-    const gate5 = mapTileList[gatesIndex[4]];
-    const path5 = findSevenStepPath(grids, gate4.x, gate4.y, gate5.x, gate5.y);
-    // console.log(`path3: ${JSON.stringify(path5)}`)
-
-    const gate6 = mapTileList[gatesIndex[5]];
-    const path6 = findSevenStepPath(grids, gate5.x, gate5.y, gate6.x, gate6.y);
-    // console.log(`path3: ${JSON.stringify(path6)}`)
-
-
-    if (path1 != null) {
-        mainPathList.push(...path1.slice(1, -1));
-    }
-
-    if (path2 != null) {
-        mainPathList.push(...path2.slice(1, -1));
-    }
-
-    if (path3 != null) {
-        mainPathList.push(...path3.slice(1, -1));
-    }
-
-    if (path4 != null) {
-        mainPathList.push(...path4.slice(1, -1));
-    }
-
-    if (path5 != null) {
-        mainPathList.push(...path5.slice(1, -1));
-    }
-
-    if (path6 != null) {
-        mainPathList.push(...path6.slice(1, -1));
-    }*/
+    // if (path1 != null) {
+    //     mainPathList.push(...path1.slice(1, -1));
+    // }
+    //
+    // if (path2 != null) {
+    //     mainPathList.push(...path2.slice(1, -1));
+    // }
+    //
+    // if (path3 != null) {
+    //     mainPathList.push(...path3.slice(1, -1));
+    // }
+    //
+    // if (path4 != null) {
+    //     mainPathList.push(...path4.slice(1, -1));
+    // }
+    //
+    // if (path5 != null) {
+    //     mainPathList.push(...path5.slice(1, -1));
+    // }
+    //
+    // if (path6 != null) {
+    //     mainPathList.push(...path6.slice(1, -1));
+    // }
 
     // console.log(`mainPathList: ${JSON.stringify(mainPathList)}`);
 
