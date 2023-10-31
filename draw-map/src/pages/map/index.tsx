@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Button, Input, notification} from "antd";
 import {BossRoom, Gate, GemUnderWorldModel, MapBlock, TreasureRoom} from "../../model/gemUnderWorldModel";
 import {genShownMapTiles} from "../../logic/mapDataHandle";
@@ -10,7 +10,8 @@ import {
     COLOR_TILE_SELECTED,
     COLOR_TREASURE_EPIC,
     COLOR_TREASURE_LEGEND,
-    COLOR_TREASURE_MYTHIC, COLOR_TREASURE_NORMAL
+    COLOR_TREASURE_MYTHIC,
+    COLOR_TREASURE_NORMAL
 } from "../../const/colorDefine";
 
 const {TextArea} = Input;
@@ -19,6 +20,7 @@ const MapPage: React.FC = () => {
 
     const inputRef = React.useRef<string | null>(null);
     const [showMapTiles, setShowMapTiles] = React.useState<ShowMapTile[]>([]);
+    const [textAreaValue, setTextAreaValue] = React.useState<string>("");
     const notifyError = () => {
         notification.error({
             message: "抓包数据为空或格式错误",
@@ -30,6 +32,7 @@ const MapPage: React.FC = () => {
     const handleInputData = () => {
 
         try {
+            localStorage.setItem('mapInput', inputRef.current ?? "");
             if (inputRef.current != null) {
                 const data = JSON.parse(inputRef.current);
                 console.log(data.result.Info.UnderspireData);
@@ -110,14 +113,28 @@ const MapPage: React.FC = () => {
                 // });
             } else {
                 notifyError();
+                setShowMapTiles([]);
             }
-
 
         } catch (e) {
             notifyError();
+            setShowMapTiles([]);
         }
 
     }
+
+    useEffect(() => {
+        console.log("useEffect");
+        const input = localStorage.getItem('mapInput');
+        if (input != null) {
+            inputRef.current = input;
+            setTextAreaValue(input);
+            if (input.length > 256) {
+                handleInputData();
+            }
+        }
+
+    }, []);
 
     const renderRow = (rowData: ShowMapTile[], index: number) => {
         return (
@@ -159,8 +176,10 @@ const MapPage: React.FC = () => {
             </div>
             <TextArea
                 rows={4}
+                value={textAreaValue}
                 onChange={e => {
                     inputRef.current = e.target.value;
+                    setTextAreaValue(e.target.value);
                 }}
             />
 
