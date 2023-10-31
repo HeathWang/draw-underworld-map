@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {ShowMapTile} from '../../../model/showMapTile';
 import './styles.css';
+import {COLOR_TILE_SELECTED} from "../../../const/colorDefine";
 
 type TileProps = {
     showMapTile: ShowMapTile;
@@ -29,7 +30,7 @@ const Tile: React.FC<TileProps> = (props) => {
 
         } else {
             tileModel.selected = true;
-            tileModel.selectedBackground = "#564941";
+            tileModel.selectedBackground = COLOR_TILE_SELECTED;
         }
 
         // copy tileModel

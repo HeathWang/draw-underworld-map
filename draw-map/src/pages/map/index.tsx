@@ -6,7 +6,12 @@ import {ShowMapTile} from "../../model/showMapTile";
 import Tile from "./tile";
 import "./styles.css";
 import {imageR} from "../../resource/imageR";
-import {findMapMainPath, testFind} from "../../logic/findPath";
+import {
+    COLOR_TILE_SELECTED,
+    COLOR_TREASURE_EPIC,
+    COLOR_TREASURE_LEGEND,
+    COLOR_TREASURE_MYTHIC, COLOR_TREASURE_NORMAL
+} from "../../const/colorDefine";
 
 const {TextArea} = Input;
 
@@ -193,12 +198,22 @@ const MapPage: React.FC = () => {
                                                                   style={{width: "20px", height: '20px'}}/>
                     </div>
                     <div className="map-tips__chest__sub">
-                        <span>史诗以下宝箱以<span style={{background: "#aae3a7"}}>绿色背景</span>标识</span>
+                        <span>史诗以下宝箱以<span style={{background: COLOR_TREASURE_NORMAL}}>绿色背景</span>标识</span>
                     </div>
                     <div className="map-tips__chest__sub">
-                        <span><span style={{background: "#ce47c5"}}>史诗</span>、<span
-                            style={{background: "#ecaf10"}}>传奇</span>、<span
-                            style={{background: "rgba(23,175,151,0.67)"}}>神话</span>以不同背景色标识</span>
+                        <span><span style={{background: COLOR_TREASURE_EPIC}}>史诗</span>、<span
+                            style={{background: COLOR_TREASURE_LEGEND}}>传奇</span>、<span
+                            style={{background: COLOR_TREASURE_MYTHIC}}>神话</span>以不同背景色标识</span>
+                    </div>
+                </div>
+
+                <div className="map-tips__tag">
+                    <div>
+                        <span><span className="map-tips__tag__title">地图标记</span>：通过点击地图上的节点来标记</span>
+                    </div>
+                    <div>
+                        <span>点击标记后，节点以<span
+                            style={{background: COLOR_TILE_SELECTED, color: "white"}}>棕灰色背景</span>显示，再次点击取消标记</span>
                     </div>
                 </div>
 

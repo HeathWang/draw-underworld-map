@@ -1,6 +1,12 @@
 import {BossRoom, Gate, GemUnderWorldModel, TreasureRoom} from "../model/gemUnderWorldModel";
 import {ShowMapTile} from "../model/showMapTile";
 import {imageR} from "../resource/imageR";
+import {
+    COLOR_TREASURE_EPIC,
+    COLOR_TREASURE_LEGEND,
+    COLOR_TREASURE_MYTHIC,
+    COLOR_TREASURE_NORMAL
+} from "../const/colorDefine";
 
 
 export const genShownMapTiles = (originData: GemUnderWorldModel): {shownMapTiles: ShowMapTile[], index: Record<string, {"node": number, "Dir": number}>} => {
@@ -235,17 +241,17 @@ const treasureGodCategoryList: number[] = [16172, 16178, 16184, 16190, 16196, 16
 const getTreasureMapColor = (treasure: TreasureRoom): string => {
     const obj = treasureEpicCategoryList.find(item => item === treasure.category);
     if (obj != null) {
-        return "#ce47c5";
+        return COLOR_TREASURE_EPIC;
     }
 
     if (treasureLegendCategoryList.find(item => item === treasure.category) != null) {
-        return "#ecaf10";
+        return COLOR_TREASURE_LEGEND;
     }
 
     if (treasureGodCategoryList.find(item => item === treasure.category) != null) {
-        return "rgba(23,175,151,0.67)";
+        return COLOR_TREASURE_MYTHIC;
     }
 
-    return "#aae3a7"
+    return COLOR_TREASURE_NORMAL;
 }
 

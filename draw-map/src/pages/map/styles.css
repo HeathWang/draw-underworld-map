@@ -77,4 +77,20 @@
 }
 
 
+.map-tips__tag {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: medium;
+    font-weight: 400;
+    padding-left: 20px;
+}
+
+.map-tips__tag__title {
+    font-size: 30px;
+    font-weight: bold;
+    color: crimson;
+}
+
+
 
