@@ -5,6 +5,7 @@ import {genShownMapTiles} from "../../logic/mapDataHandle";
 import {ShowMapTile} from "../../model/showMapTile";
 import Tile from "./tile";
 import "./styles.css";
+import "./tile/styles.css";
 import {imageR} from "../../resource/imageR";
 import {
     COLOR_TILE_SELECTED,
@@ -13,6 +14,10 @@ import {
     COLOR_TREASURE_MYTHIC,
     COLOR_TREASURE_NORMAL
 } from "../../const/colorDefine";
+import {
+    ArrowRightOutlined,
+    ArrowUpOutlined,
+} from '@ant-design/icons';
 
 const {TextArea} = Input;
 
@@ -233,6 +238,13 @@ const MapPage: React.FC = () => {
                     <div>
                         <span>点击标记后，节点以<span
                             style={{background: COLOR_TILE_SELECTED, color: "white"}}>棕灰色背景</span>显示，再次点击取消标记</span>
+                    </div>
+                    <div>
+                        <span><span className="map-tips__tag__title">门朝向</span>：以箭头标识门下一步走向</span>
+                        <ArrowUpOutlined className="content-icon__dir"/>
+                        <ArrowUpOutlined rotate={180} className="content-icon__dir"/>
+                        <ArrowRightOutlined rotate={180} className="content-icon__dir"/>
+                        <ArrowRightOutlined className="content-icon__dir" />
                     </div>
                 </div>
 
