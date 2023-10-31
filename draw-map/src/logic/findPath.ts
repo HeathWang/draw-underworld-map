@@ -2,6 +2,7 @@ import {GemUnderWorldModel} from "../model/gemUnderWorldModel";
 import map from "../pages/map";
 import {ShowMapTile} from "../model/showMapTile";
 import {imageR} from "../resource/imageR";
+import {DIR} from "../const/mapInfoDefine";
 
 export {}
 
@@ -101,7 +102,34 @@ export const testFind = () => {
 }
 
 // 上右下左对应0123
+export const nextPath = (x: number, y: number, dir: number) => {
+    let nextX = x;
+    let nextY = y;
+    if (dir === 0) {
+        nextY = y - 1;
+    } else if (dir === 1) {
+        nextX = x + 1;
+    } else if (dir === 2) {
+        nextY = y + 1;
+    } else if (dir === 3) {
+        nextX = x - 1;
+    }
+    return {x: nextX, y: nextY};
+}
 
+export const meNextArrow = (dir: number): DIR => {
+    if (dir === 0) {
+        return 'up';
+    } else if (dir === 1) {
+        return 'right';
+    } else if (dir === 2) {
+        return 'down';
+    } else if (dir === 3) {
+        return 'left';
+    } else {
+        return 'up';
+    }
+}
 
 export const findMapMainPath = async (mapData: GemUnderWorldModel, mapTileList: ShowMapTile[], gatesIndex: Record<string, {"node": number, "Dir": number}>): Promise<ShowMapTile[]> => {
     let grids: number[][] = [];

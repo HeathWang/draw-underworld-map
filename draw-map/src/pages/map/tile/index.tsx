@@ -2,6 +2,11 @@ import React, {useEffect, useState} from 'react';
 import {ShowMapTile} from '../../../model/showMapTile';
 import './styles.css';
 import {COLOR_TILE_SELECTED} from "../../../const/colorDefine";
+import {
+    ArrowRightOutlined,
+    ArrowUpOutlined,
+} from '@ant-design/icons';
+import {DIR} from "../../../const/mapInfoDefine";
 
 type TileProps = {
     showMapTile: ShowMapTile;
@@ -52,12 +57,27 @@ const Tile: React.FC<TileProps> = (props) => {
         }
     }
 
+    const getDirIcon = (dir: DIR) => {
+        if (dir === 'up') {
+            return (<ArrowUpOutlined className="content-icon__dir" />)
+        } else if (dir === 'right') {
+            return (<ArrowRightOutlined className="content-icon__dir" />)
+        } else if (dir === 'down') {
+            return (<ArrowUpOutlined rotate={180} className="content-icon__dir" />)
+        } else if (dir === 'left') {
+            return (<ArrowRightOutlined rotate={180} className="content-icon__dir" />)
+        }
+    }
+
     return (
         tileModel.icon != null ?
             <div className="content-icon" style={getTileStyle()}
                  onClick={tileClicked}
             >
-                <img className="icon" src={tileModel.icon} alt=""/>
+                {
+                    tileModel.dir != null && getDirIcon(tileModel.dir)
+                }
+                <img className="icon" src={tileModel.icon} alt="tile_icon"/>
                 <div className="content-icon__text">
                     {tileModel.title}
                 </div>

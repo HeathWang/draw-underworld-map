@@ -29,6 +29,13 @@
     align-items: center; /* 垂直居中 */
 }
 
+.content-icon__dir {
+    padding-left: 6px;
+    font-size: 22px;
+    color: #ea1212;
+}
+
+
 .icon {
     width: 22px;
     height: 22px;

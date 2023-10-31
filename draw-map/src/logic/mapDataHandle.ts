@@ -7,6 +7,7 @@ import {
     COLOR_TREASURE_MYTHIC,
     COLOR_TREASURE_NORMAL
 } from "../const/colorDefine";
+import {meNextArrow} from "./findPath";
 
 
 export const genShownMapTiles = (originData: GemUnderWorldModel): {shownMapTiles: ShowMapTile[], index: Record<string, {"node": number, "Dir": number}>} => {
@@ -46,6 +47,7 @@ export const genShownMapTiles = (originData: GemUnderWorldModel): {shownMapTiles
                 gatesIndex[`${gate?.index}`] = {"node": index, "Dir": gate.dir};
                 shownMapTiles.push({
                     type: 'gate',
+                    dir: meNextArrow(gate.dir),
                     title: getGateMapName(gate),
                     background: '#f5cdab',
                     indexValue: tileStr,
@@ -116,6 +118,7 @@ const getGateMapName = (gate: Gate): string => {
         return "";
     }
 }
+
 
 
 const gateIconsMapping: Record<string, string> = {
