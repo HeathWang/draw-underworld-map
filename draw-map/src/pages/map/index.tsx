@@ -19,7 +19,7 @@ import {
     ArrowUpOutlined,
 } from '@ant-design/icons';
 import MapColorPicker from "../../uiComponent/colorPicker/mapColorPicker";
-import {CACHE_MAP_KEY} from "../../const/mapInfoDefine";
+import {CACHE_MAP_KEY, CACHE_MAP_TILES_KEY} from "../../const/mapInfoDefine";
 
 const {TextArea} = Input;
 
@@ -118,6 +118,7 @@ const MapPage: React.FC = () => {
                 // findMapMainPath(underWorldModel, results.shownMapTiles, results.index).then((tiles) => {
                 //     // setShowMapTiles(tiles);
                 // });
+                localStorage.setItem(CACHE_MAP_TILES_KEY, JSON.stringify(results.shownMapTiles));
             } else {
                 notifyError();
                 setShowMapTiles([]);
@@ -136,9 +137,11 @@ const MapPage: React.FC = () => {
         if (input != null) {
             inputRef.current = input;
             setTextAreaValue(input);
-            if (input.length > 256) {
-                handleInputData();
-            }
+        }
+        const mapTiles = localStorage.getItem(CACHE_MAP_TILES_KEY);
+        if (mapTiles != null) {
+            const tiles = JSON.parse(mapTiles);
+            setShowMapTiles(tiles);
         }
 
     }, []);
@@ -149,6 +152,7 @@ const MapPage: React.FC = () => {
         const newTiles = [...showMapTiles];
         newTiles[index] = tile;
         setShowMapTiles(newTiles);
+        localStorage.setItem(CACHE_MAP_TILES_KEY, JSON.stringify(newTiles));
     }
 
     const renderRow = (rowData: ShowMapTile[], index: number) => {
@@ -176,6 +180,7 @@ const MapPage: React.FC = () => {
             }
         });
         setShowMapTiles(newTiles);
+        localStorage.setItem(CACHE_MAP_TILES_KEY, JSON.stringify(newTiles));
     }
 
     const renderMap = () => {
