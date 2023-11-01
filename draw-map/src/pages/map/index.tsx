@@ -18,6 +18,8 @@ import {
     ArrowRightOutlined,
     ArrowUpOutlined,
 } from '@ant-design/icons';
+import MapColorPicker from "../../uiComponent/colorPicker/mapColorPicker";
+import {CACHE_MAP_KEY} from "../../const/mapInfoDefine";
 
 const {TextArea} = Input;
 
@@ -37,7 +39,7 @@ const MapPage: React.FC = () => {
     const handleInputData = () => {
 
         try {
-            localStorage.setItem('mapInput', inputRef.current ?? "");
+            localStorage.setItem(CACHE_MAP_KEY, inputRef.current ?? "");
             if (inputRef.current != null) {
                 const data = JSON.parse(inputRef.current);
                 console.log(data.result.Info.UnderspireData);
@@ -141,16 +143,39 @@ const MapPage: React.FC = () => {
 
     }, []);
 
+    const updateTile = (tile: ShowMapTile) => {
+
+        const index = showMapTiles.findIndex((value, index, arr) => value.indexValue === tile.indexValue);
+        const newTiles = [...showMapTiles];
+        newTiles[index] = tile;
+        setShowMapTiles(newTiles);
+    }
+
     const renderRow = (rowData: ShowMapTile[], index: number) => {
         return (
             <div className="map-container__map-row" key={`${index}`}>
                 {
                     rowData.map((tile, index) => {
-                        return <Tile showMapTile={tile} key={tile.indexValue}/>
+                        return <Tile
+                            showMapTile={tile}
+                            key={tile.indexValue}
+                            updateCallback={updateTile}
+                        />
                     })
                 }
             </div>
         );
+    }
+
+    const selectedTileColorChanged = (colorHex: string) => {
+      console.log(`selectedTileColorChanged: ${colorHex}`);
+        const newTiles = [...showMapTiles];
+        newTiles.forEach((value, index, arr) => {
+            if (value.selected === true) {
+                value.selectedBackground = colorHex;
+            }
+        });
+        setShowMapTiles(newTiles);
     }
 
     const renderMap = () => {
@@ -189,12 +214,13 @@ const MapPage: React.FC = () => {
             />
 
 
-            <div className="button">
-                <Button type={"primary"} size={"large"} style={{width: "100%"}}
+            <div className="action">
+                <Button className="action__button" type={"primary"} size={"large"}
                         onClick={handleInputData}
                 >
                     开始透视
                 </Button>
+                <MapColorPicker colorChangedCallback={selectedTileColorChanged} />
                 {/*<Button onClick={testPath}>测试</Button>*/}
             </div>
 
@@ -219,7 +245,7 @@ const MapPage: React.FC = () => {
                 <div className="map-tips__chest">
                     <div className="map-tips__chest__sub">
                         宝箱分为普通、稀有、罕见、史诗、传奇、神话<img src={`${imageR.chest_treasure}`}
-                                                                  style={{width: "20px", height: '20px'}}/>
+                                                                  style={{width: "20px", height: '20px'}} alt={""}/>
                     </div>
                     <div className="map-tips__chest__sub">
                         <span>史诗以下宝箱以<span style={{background: COLOR_TREASURE_NORMAL}}>绿色背景</span>标识</span>

@@ -6,10 +6,11 @@ import {
     ArrowRightOutlined,
     ArrowUpOutlined,
 } from '@ant-design/icons';
-import {DIR} from "../../../const/mapInfoDefine";
+import {CACHE_MAP_COLOR_KEY, DIR} from "../../../const/mapInfoDefine";
 
 type TileProps = {
     showMapTile: ShowMapTile;
+    updateCallback: (tile: ShowMapTile) => void;
 };
 
 const Tile: React.FC<TileProps> = (props) => {
@@ -20,10 +21,14 @@ const Tile: React.FC<TileProps> = (props) => {
         setTileModel(props.showMapTile);
     }, [props.showMapTile]);
 
-    // const style = {
-    //     backgroundColor: tileModel.background,
-    //     fontSize: tileModel.type === 'treasure' ? "10px" : "12px"
-    // }
+    const getColor = () => {
+        const colorHex = localStorage.getItem(CACHE_MAP_COLOR_KEY);
+        if (colorHex) {
+            return colorHex;
+        } else {
+            return COLOR_TILE_SELECTED;
+        }
+    }
 
     const tileClicked = () => {
         if (tileModel.type === "empty") {
@@ -35,12 +40,12 @@ const Tile: React.FC<TileProps> = (props) => {
 
         } else {
             tileModel.selected = true;
-            tileModel.selectedBackground = COLOR_TILE_SELECTED;
+            tileModel.selectedBackground = getColor();
         }
 
         // copy tileModel
         const tile = Object.assign({}, tileModel);
-        setTileModel(tile);
+        props.updateCallback(tile);
     }
 
     const getTileStyle = () => {

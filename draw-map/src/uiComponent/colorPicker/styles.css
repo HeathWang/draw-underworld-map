@@ -1,0 +1,15 @@
+
+.colorPicker-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    margin-left: 20px;
+}
+
+.colorPicker-content__tips {
+    font-size: 14px;
+    font-weight: bold;
+    color: black;
+    padding-right: 8px;
+}

@@ -13,10 +13,18 @@
     flex-direction: row;
 }
 
-.button {
+.action {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
     padding-top: 8px;
     padding-bottom: 8px;
     width: 100%;
+}
+
+.action__button {
+    width: 40%;
 }
 
 .guide-top {
