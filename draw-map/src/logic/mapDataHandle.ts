@@ -122,12 +122,12 @@ const getGateMapName = (gate: Gate): string => {
 
 
 const gateIconsMapping: Record<string, string> = {
-    "0": imageR.t_gray,
-    "1": imageR.t_green,
-    "2": imageR.t_blue,
-    "3": imageR.t_purple,
-    "4": imageR.t_yellow,
-    "5": imageR.t_red,
+    "0": imageR.boss_gray,
+    "1": imageR.boss_green,
+    "2": imageR.boss_blue,
+    "3": imageR.boss_purple,
+    "4": imageR.boss_yellow,
+    "5": imageR.boss_red,
 }
 
 const getGateIcon = (gate: Gate): string => {
@@ -161,22 +161,15 @@ const getBossMapBackground = (boss: BossRoom): string => {
     return bossMappingColor[`${boss.category}`];
 }
 
-/**
- *     t_gray: "icons/Troopcardall_Orange.png",
- *     t_red: "icons/Troopcardall_Red.png",
- *     t_blue: "icons/Troopcardall_Blue.png",
- *     t_green: "icons/Troopcardall_Green.png",
- *     t_yellow: "icons/Troopcardall_Yellow.png",
- *     t_purple: "icons/Troopcardall_Purple.png",
- */
+
 const bossIconsMapping: Record<string, string> = {
-    '16165': imageR.boss_gray,
-    '16161': imageR.boss_green,
-    '16160': imageR.boss_blue,
-    '16164': imageR.boss_purple,
-    '16163': imageR.boss_yellow,
-    '16162': imageR.boss_red,
-    '16166': imageR.chest_crystal,
+    '16165': imageR.gray,
+    '16161': imageR.green,
+    '16160': imageR.blue,
+    '16164': imageR.purple,
+    '16163': imageR.yellow,
+    '16162': imageR.red,
+    '16166': imageR.gem,
 }
 
 const getBossIcon = (boss: BossRoom): string => {

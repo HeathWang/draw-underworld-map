@@ -79,7 +79,10 @@ const Tile: React.FC<TileProps> = (props) => {
             <div className="content-icon" style={getTileStyle()}
                  onClick={tileClicked}
             >
-                <img className="icon" src={tileModel.icon} alt="tile_icon"/>
+                <div className="tile-icon-container">
+                    <img className="tile-icon-container__img" src={tileModel.icon} alt="tile_icon"/>
+                </div>
+
                 <div className="content-icon__text">
                     {tileModel.title}
                 </div>
