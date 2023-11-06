@@ -18,7 +18,7 @@ const App: React.FC = () => {
     const navigator = useNavigate();
 
     return (
-        <Layout hasSider style={{ minHeight: '100vh' }}>
+        <Layout hasSider style={{minHeight: '100vh'}}>
             <Sider
                 collapsible
                 collapsed={collapsed}
@@ -35,9 +35,9 @@ const App: React.FC = () => {
                 </Menu>
             </Sider>
 
-            <Layout >
+            <Layout>
 
-                <Content style={{ margin: '0 6px' }}>
+                <Content style={{margin: '0 6px'}}>
                     <div style={{padding: 6, textAlign: 'center', background: colorBgContainer}}>
                         <AppRoutes></AppRoutes>
                     </div>
@@ -48,6 +48,9 @@ const App: React.FC = () => {
                     </div>
                     <div>
                         群号:468647928 coding by 猴哥 NL
+                    </div>
+                    <div>
+                        <span>感谢BigBoom 大佬<span className="app-thanks-name">OpTiz</span>赞助的云服务器</span>
                     </div>
                 </Footer>
             </Layout>
