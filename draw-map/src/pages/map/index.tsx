@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import {Button, Input, notification} from "antd";
 import {BossRoom, Gate, GemUnderWorldModel, MapBlock, TreasureRoom} from "../../model/gemUnderWorldModel";
 import {genShownMapTiles} from "../../logic/mapDataHandle";
-import {ShowMapTile} from "../../model/showMapTile";
+import {ShowMapTile, UserInfoSummary} from "../../model/showMapTile";
 import Tile from "./tile";
 import "./styles.css";
 import "./tile/styles.css";
@@ -12,14 +12,15 @@ import {
     COLOR_TREASURE_EPIC,
     COLOR_TREASURE_LEGEND,
     COLOR_TREASURE_MYTHIC,
-    COLOR_TREASURE_NORMAL
+    COLOR_TREASURE_NORMAL, COLOR_TREASURE_NORMAL_2, COLOR_TREASURE_RARE, COLOR_TREASURE_UNNORMAL
 } from "../../const/colorDefine";
 import {
     ArrowRightOutlined,
     ArrowUpOutlined,
 } from '@ant-design/icons';
 import MapColorPicker from "../../uiComponent/colorPicker/mapColorPicker";
-import {CACHE_MAP_KEY, CACHE_MAP_TILES_KEY} from "../../const/mapInfoDefine";
+import {CACHE_MAP_KEY, CACHE_MAP_TILES_KEY, CACHE_MAP_USER_INFO_KEY} from "../../const/mapInfoDefine";
+import UserSummary from "./userSummary";
 
 const {TextArea} = Input;
 
@@ -28,6 +29,8 @@ const MapPage: React.FC = () => {
     const inputRef = React.useRef<string | null>(null);
     const [showMapTiles, setShowMapTiles] = React.useState<ShowMapTile[]>([]);
     const [textAreaValue, setTextAreaValue] = React.useState<string>("");
+    const [userSummary, setUserSummary] = React.useState<UserInfoSummary | null>(null);
+
     const notifyError = () => {
         notification.error({
             message: "抓包数据为空或格式错误",
@@ -48,6 +51,7 @@ const MapPage: React.FC = () => {
                 const bossRoomInfo = data.result.Info.UnderspireData.BossRoomInfo;
                 const firstNode = data.result.Info.UnderspireData.Completed[0];
                 const treasureRooms = data.result.Info.UnderspireData.TreasureRoomInfo;
+                const nickName = data.result.NewHeroData.Name;
 
                 let mapObj: MapBlock[] = [];
                 for (let i = 0; i < map.length; i++) {
@@ -115,9 +119,7 @@ const MapPage: React.FC = () => {
                 const results = genShownMapTiles(underWorldModel);
                 // console.log(`${JSON.stringify(showMapTiles, null, 2)}`);
                 setShowMapTiles(results.shownMapTiles);
-                // findMapMainPath(underWorldModel, results.shownMapTiles, results.index).then((tiles) => {
-                //     // setShowMapTiles(tiles);
-                // });
+                getUserSummary(results.shownMapTiles, nickName);
                 localStorage.setItem(CACHE_MAP_TILES_KEY, JSON.stringify(results.shownMapTiles));
             } else {
                 notifyError();
@@ -131,6 +133,45 @@ const MapPage: React.FC = () => {
 
     }
 
+    const getUserSummary = (mapTiles: ShowMapTile[], nick: string) => {
+        let normal = 0;
+        let unnormal = 0;
+        let rare = 0;
+        let epic = 0;
+        let legend = 0;
+        let mythic = 0;
+
+        mapTiles.forEach((item) => {
+            if (item.type === "treasure") {
+                if (item.chestLevel === 1) {
+                    normal++;
+                } else if (item.chestLevel === 2) {
+                    unnormal++;
+                } else if (item.chestLevel === 3) {
+                    rare++;
+                } else if (item.chestLevel === 4) {
+                    epic++;
+                } else if (item.chestLevel === 5) {
+                    legend++;
+                } else if (item.chestLevel === 6) {
+                    mythic++;
+                }
+            }
+        });
+        const user: UserInfoSummary = {
+            nickName: nick,
+            chestNormal: normal,
+            chestUnNormal: unnormal,
+            chestRare: rare,
+            chestEpic: epic,
+            chestLegend: legend,
+            chestMythic: mythic,
+        }
+
+        setUserSummary(user);
+        localStorage.setItem(CACHE_MAP_USER_INFO_KEY, JSON.stringify(user));
+    }
+
     useEffect(() => {
         console.log("useEffect");
         const input = localStorage.getItem('mapInput');
@@ -142,6 +183,12 @@ const MapPage: React.FC = () => {
         if (mapTiles != null) {
             const tiles = JSON.parse(mapTiles);
             setShowMapTiles(tiles);
+        }
+
+        const userInfo = localStorage.getItem(CACHE_MAP_USER_INFO_KEY);
+        if (userInfo != null) {
+            const user = JSON.parse(userInfo);
+            setUserSummary(user);
         }
 
     }, []);
@@ -234,6 +281,11 @@ const MapPage: React.FC = () => {
                     {renderMap()}
                 </div>
             }
+            <div>
+                {
+                    userSummary != null && <UserSummary userSummary={userSummary} />
+                }
+            </div>
 
 
             <div className="map-tips">
@@ -253,12 +305,13 @@ const MapPage: React.FC = () => {
                                                                   style={{width: "20px", height: '20px'}} alt={""}/>
                     </div>
                     <div className="map-tips__chest__sub">
-                        <span>史诗以下宝箱以<span style={{background: COLOR_TREASURE_NORMAL}}>绿色背景</span>标识</span>
-                    </div>
-                    <div className="map-tips__chest__sub">
-                        <span><span style={{background: COLOR_TREASURE_EPIC}}>史诗</span>、<span
-                            style={{background: COLOR_TREASURE_LEGEND}}>传奇</span>、<span
-                            style={{background: COLOR_TREASURE_MYTHIC}}>神话</span>以不同背景色标识</span>
+                        <span>
+                            <span style={{background: COLOR_TREASURE_NORMAL_2}}>普通</span>、
+                            <span style={{background: COLOR_TREASURE_UNNORMAL}}>稀有</span>、
+                            <span style={{background: COLOR_TREASURE_RARE}}>罕见</span>、
+                            <span style={{background: COLOR_TREASURE_EPIC}}>史诗</span>、
+                            <span style={{background: COLOR_TREASURE_LEGEND}}>传奇</span>、
+                            <span style={{background: COLOR_TREASURE_MYTHIC}}>神话</span>以不同背景色标识</span>
                     </div>
                 </div>
 

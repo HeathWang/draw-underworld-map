@@ -1,0 +1,26 @@
+
+.user-summary {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: flex-start;
+    padding-top: 10px;
+    padding-left: 2px;
+}
+
+.user-summary__title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #333333;
+}
+
+.user-summary-nick {
+    color: #1fb9e2;
+    text-decoration: underline;
+}
+
+.user-summary-chest {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333333;
+}

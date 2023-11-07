@@ -5,7 +5,7 @@ import {
     COLOR_TREASURE_EPIC,
     COLOR_TREASURE_LEGEND,
     COLOR_TREASURE_MYTHIC,
-    COLOR_TREASURE_NORMAL
+    COLOR_TREASURE_NORMAL, COLOR_TREASURE_NORMAL_2, COLOR_TREASURE_RARE, COLOR_TREASURE_UNNORMAL
 } from "../const/colorDefine";
 import {meNextArrow} from "./findPath";
 
@@ -84,6 +84,7 @@ export const genShownMapTiles = (originData: GemUnderWorldModel): {shownMapTiles
                     icon: imageR.chest_treasure,
                     x: block.x,
                     y: block.y,
+                    chestLevel: getTreasureLevel(treasureRoom),
                 });
                 return;
             }
@@ -229,12 +230,27 @@ const getTreasureMapName = (treasure: TreasureRoom): string => {
     return treasureMapping[`${treasure.category}`];
 }
 
-
+const treasureNormalCategoryList: number[] = [16167, 16173, 16179, 16185, 16191, 16197];
+const treasureUnnormalCategoryList: number[] = [16168, 16174, 16180, 16186, 16192, 16198];
+const treasureRareCategoryList: number[] = [16169, 16175, 16181, 16187, 16193, 16199];
 const treasureEpicCategoryList: number[] = [16170, 16176, 16182, 16188, 16194, 16200];
 const treasureLegendCategoryList: number[] = [16171, 16177, 16183, 16189, 16195, 16201];
 const treasureGodCategoryList: number[] = [16172, 16178, 16184, 16190, 16196, 16202];
 
 const getTreasureMapColor = (treasure: TreasureRoom): string => {
+
+    if (treasureNormalCategoryList.find(item => item === treasure.category) != null) {
+        return COLOR_TREASURE_NORMAL_2;
+    }
+
+    if (treasureUnnormalCategoryList.find(item => item === treasure.category) != null) {
+        return COLOR_TREASURE_UNNORMAL;
+    }
+
+    if (treasureRareCategoryList.find(item => item === treasure.category) != null) {
+        return COLOR_TREASURE_RARE;
+    }
+
     const obj = treasureEpicCategoryList.find(item => item === treasure.category);
     if (obj != null) {
         return COLOR_TREASURE_EPIC;
@@ -249,5 +265,33 @@ const getTreasureMapColor = (treasure: TreasureRoom): string => {
     }
 
     return COLOR_TREASURE_NORMAL;
+}
+
+const getTreasureLevel = (treasure: TreasureRoom): number => {
+    if (treasureNormalCategoryList.find(item => item === treasure.category) != null) {
+        return 1;
+    }
+
+    if (treasureUnnormalCategoryList.find(item => item === treasure.category) != null) {
+        return 2;
+    }
+
+    if (treasureRareCategoryList.find(item => item === treasure.category) != null) {
+        return 3;
+    }
+
+    if (treasureEpicCategoryList.find(item => item === treasure.category) != null) {
+        return 4;
+    }
+
+    if (treasureLegendCategoryList.find(item => item === treasure.category) != null) {
+        return 5;
+    }
+
+    if (treasureGodCategoryList.find(item => item === treasure.category) != null) {
+        return 6;
+    }
+
+    return 0;
 }
 
