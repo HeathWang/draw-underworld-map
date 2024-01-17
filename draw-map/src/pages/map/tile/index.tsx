@@ -1,12 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {ShowMapTile} from '../../../model/showMapTile';
 import './styles.css';
-import {COLOR_TILE_SELECTED} from "../../../const/colorDefine";
-import {
-    ArrowRightOutlined,
-    ArrowUpOutlined,
-} from '@ant-design/icons';
-import {CACHE_MAP_COLOR_KEY, DIR} from "../../../const/mapInfoDefine";
+import {COLOR_TILE_SELECTED, COLOR_TILE_SELECTED_SECONDARY} from "../../../const/colorDefine";
+import {ArrowRightOutlined, ArrowUpOutlined,} from '@ant-design/icons';
+import {CACHE_MAP_COLOR_KEY, CACHE_MAP_SECONDARY_COLOR_KEY, DIR} from "../../../const/mapInfoDefine";
 
 type TileProps = {
     showMapTile: ShowMapTile;
@@ -21,12 +18,20 @@ const Tile: React.FC<TileProps> = (props) => {
         setTileModel(props.showMapTile);
     }, [props.showMapTile]);
 
-    const getColor = () => {
-        const colorHex = localStorage.getItem(CACHE_MAP_COLOR_KEY);
+    const getColor = (isMain = true) => {
+        let colorHex = localStorage.getItem(CACHE_MAP_COLOR_KEY);
+        if (!isMain) {
+            colorHex = localStorage.getItem(CACHE_MAP_SECONDARY_COLOR_KEY);
+        }
         if (colorHex) {
             return colorHex;
         } else {
-            return COLOR_TILE_SELECTED;
+            if (isMain) {
+                return COLOR_TILE_SELECTED;
+            } else {
+                return COLOR_TILE_SELECTED_SECONDARY;
+            }
+
         }
     }
 
@@ -64,13 +69,13 @@ const Tile: React.FC<TileProps> = (props) => {
 
     const getDirIcon = (dir: DIR) => {
         if (dir === 'up') {
-            return (<ArrowUpOutlined className="content-icon__dir" />)
+            return (<ArrowUpOutlined className="content-icon__dir"/>)
         } else if (dir === 'right') {
-            return (<ArrowRightOutlined className="content-icon__dir" />)
+            return (<ArrowRightOutlined className="content-icon__dir"/>)
         } else if (dir === 'down') {
-            return (<ArrowUpOutlined rotate={180} className="content-icon__dir" />)
+            return (<ArrowUpOutlined rotate={180} className="content-icon__dir"/>)
         } else if (dir === 'left') {
-            return (<ArrowRightOutlined rotate={180} className="content-icon__dir" />)
+            return (<ArrowRightOutlined rotate={180} className="content-icon__dir"/>)
         }
     }
 
@@ -102,3 +107,4 @@ const Tile: React.FC<TileProps> = (props) => {
 }
 
 export default Tile;
+

@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {Button, Input, notification, Switch} from "antd";
+import {Button, Input, notification, Modal} from "antd";
 import {BossRoom, Gate, GemUnderWorldModel, MapBlock, TreasureRoom} from "../../model/gemUnderWorldModel";
 import {genShownMapTiles} from "../../logic/mapDataHandle";
 import {ShowMapTile, UserInfoSummary} from "../../model/showMapTile";
@@ -12,12 +12,11 @@ import {
     COLOR_TREASURE_EPIC,
     COLOR_TREASURE_LEGEND,
     COLOR_TREASURE_MYTHIC,
-    COLOR_TREASURE_NORMAL, COLOR_TREASURE_NORMAL_2, COLOR_TREASURE_RARE, COLOR_TREASURE_UNNORMAL
+    COLOR_TREASURE_NORMAL_2,
+    COLOR_TREASURE_RARE,
+    COLOR_TREASURE_UNNORMAL
 } from "../../const/colorDefine";
-import {
-    ArrowRightOutlined,
-    ArrowUpOutlined,
-} from '@ant-design/icons';
+import {ArrowRightOutlined, ArrowUpOutlined,} from '@ant-design/icons';
 import MapColorPicker from "../../uiComponent/colorPicker/mapColorPicker";
 import {
     CACHE_MAP_KEY,
@@ -35,7 +34,7 @@ const MapPage: React.FC = () => {
     const [showMapTiles, setShowMapTiles] = React.useState<ShowMapTile[]>([]);
     const [textAreaValue, setTextAreaValue] = React.useState<string>("");
     const [userSummary, setUserSummary] = React.useState<UserInfoSummary | null>(null);
-    const [isMultiColor, setIsMultiColor] = React.useState<boolean>(false);
+    const [isModalOpen, setIsModalOpen] = React.useState<boolean>(false);
 
     const notifyError = () => {
         notification.error({
@@ -199,11 +198,6 @@ const MapPage: React.FC = () => {
             setUserSummary(user);
         }
 
-        const isMulColor = localStorage.getItem(CACHE_SWITCH_MUL_COLOR);
-        if (isMulColor != null) {
-            setIsMultiColor(isMulColor === "true");
-        }
-
     }, []);
 
     const updateTile = (tile: ShowMapTile) => {
@@ -232,20 +226,25 @@ const MapPage: React.FC = () => {
     }
 
     const selectedTileColorChanged = (colorHex: string, isMain = true) => {
-        console.log(`selectedTileColorChanged: ${colorHex} isMain: ${isMain}`);
+        // console.log(`selectedTileColorChanged: ${colorHex} isMain: ${isMain}`);
+        // const newTiles = [...showMapTiles];
+        // newTiles.forEach((value, index, arr) => {
+        //     if (value.selected === true) {
+        //         value.selectedBackground = colorHex;
+        //     }
+        // });
+        // setShowMapTiles(newTiles);
+        // localStorage.setItem(CACHE_MAP_TILES_KEY, JSON.stringify(newTiles));
+    }
+
+    const cleanAllMark = () => {
         const newTiles = [...showMapTiles];
         newTiles.forEach((value, index, arr) => {
-            if (value.selected === true) {
-                value.selectedBackground = colorHex;
-            }
+            value.selected = false;
         });
         setShowMapTiles(newTiles);
         localStorage.setItem(CACHE_MAP_TILES_KEY, JSON.stringify(newTiles));
-    }
-
-    const switchMulColor = (checked: boolean) => {
-        setIsMultiColor(checked);
-        localStorage.setItem(CACHE_SWITCH_MUL_COLOR, checked.toString());
+        setIsModalOpen(false);
     }
 
     const renderMap = () => {
@@ -290,21 +289,18 @@ const MapPage: React.FC = () => {
                 >
                     开始透视
                 </Button>
-                <div className="action_color_content">
-                    <div>是否开启多颜色选择</div>
-                    <Switch checked={isMultiColor}
-                            onChange={(checked: boolean, event: React.MouseEvent<HTMLButtonElement>) => {
-                                switchMulColor(checked);
-                            }}/>
-                    <MapColorPicker title={"主标记颜色"} isMain={true} colorChangedCallback={(color: string) => {
-                        selectedTileColorChanged(color, true)
-                    }}/>
-                    <MapColorPicker title={"副标记颜色"} colorChangedCallback={(color: string) => {
-                        selectedTileColorChanged(color, false)
-                    }}/>
-                </div>
+                <Button className="action__button" type={"primary"} size={"large"} style={{width: "140px"}}
+                        onClick={() => setIsModalOpen(true)}
+                >
+                    清除所有标记
+                </Button>
+                <MapColorPicker title={"标记颜色"} isMain={true} colorChangedCallback={(color: string) => {
+                    selectedTileColorChanged(color, true)
+                }}/>
+
                 {/*<Button onClick={testPath}>测试</Button>*/}
             </div>
+
 
             {showMapTiles != null && showMapTiles.length > 0 &&
                 <div className="map-container">
@@ -373,7 +369,18 @@ const MapPage: React.FC = () => {
                 {/*    <div><span className="map-tips__path__doing">门到boss路线推理开发中...</span></div>*/}
                 {/*</div>*/}
             </div>
+            <Modal
+                title={"清除地图上所有手动标记颜色"}
+                open={isModalOpen}
+                closable={false}
+                onCancel={() => setIsModalOpen(false)}
+                onOk={() => cleanAllMark()}
+            >
+                <p className="confirm_text">请明白自己正在干嘛！</p>
+                <p className="confirm_text">确认后会清除掉所有你已经标记的地图色块！</p>
+            </Modal>
         </div>
+
     );
 };
 
