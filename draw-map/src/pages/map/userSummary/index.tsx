@@ -31,11 +31,19 @@ const UserSummary: React.FC<UserSummaryProps> = (props) => {
         return 84 + totalTreasure() * 3;
     }
 
+    const getLevel = (): string => {
+        if (props.userSummary.lvl) {
+            return `${props.userSummary.lvl}级`;
+        }
+        return "";
+    }
+
 
     return (
         <div className="user-summary" onClick={userSummaryClicked}>
             <div>
                 <span className="user-summary__title">欢迎
+                    <span>{getLevel()}</span>
                     <span className="user-summary-nick">{props.userSummary.nickName}</span>
                     <span>大佬，本周你共有<span style={{color: "red"}}>{totalTreasure()}</span>个宝箱</span>
                 </span>

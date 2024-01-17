@@ -1,10 +1,12 @@
 import React from "react";
 import {ColorPicker} from 'antd';
 import './styles.css';
-import {CACHE_MAP_COLOR_KEY} from "../../const/mapInfoDefine";
-import {COLOR_TILE_SELECTED} from "../../const/colorDefine";
+import {CACHE_MAP_COLOR_KEY, CACHE_MAP_SECONDARY_COLOR_KEY} from "../../const/mapInfoDefine";
+import {COLOR_TILE_SELECTED, COLOR_TILE_SELECTED_SECONDARY} from "../../const/colorDefine";
 
 type MapColorPickerProps = {
+    title?: string;
+    isMain?: boolean;
     colorChangedCallback?: (color: string) => void;
 
 }
@@ -12,17 +14,24 @@ type MapColorPickerProps = {
 const MapColorPicker: React.FC<MapColorPickerProps> = (props) => {
 
     const defaultColor = () => {
-      const colorHex = localStorage.getItem(CACHE_MAP_COLOR_KEY);
+      let colorHex = localStorage.getItem(CACHE_MAP_COLOR_KEY);
+      if (!props.isMain) {
+          colorHex = localStorage.getItem(CACHE_MAP_SECONDARY_COLOR_KEY);
+      }
         if (colorHex) {
             return colorHex;
         } else {
-            return COLOR_TILE_SELECTED;
+            if (props.isMain) {
+                return COLOR_TILE_SELECTED;
+            } else {
+                return COLOR_TILE_SELECTED_SECONDARY;
+            }
         }
     }
 
     return (
         <div className="colorPicker-content">
-            <div className="colorPicker-content__tips">更改地图节点标记颜色</div>
+            <div className="colorPicker-content__tips">{props.title ?? '更改地图节点标记颜色'}</div>
             <ColorPicker
                 presets={[
                     {
@@ -63,7 +72,11 @@ const MapColorPicker: React.FC<MapColorPickerProps> = (props) => {
                 ]}
                 defaultValue={defaultColor()}
                 onChangeComplete={(color) => {
-                    localStorage.setItem(CACHE_MAP_COLOR_KEY, color.toHexString());
+                    if (props.isMain) {
+                        localStorage.setItem(CACHE_MAP_COLOR_KEY, color.toHexString());
+                    } else {
+                        localStorage.setItem(CACHE_MAP_SECONDARY_COLOR_KEY, color.toHexString());
+                    }
                     if (props.colorChangedCallback) {
                         props.colorChangedCallback(color.toHexString());
                     }

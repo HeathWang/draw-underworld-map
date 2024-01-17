@@ -15,7 +15,7 @@
 
 .action {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
     padding-top: 8px;
@@ -24,7 +24,15 @@
 }
 
 .action__button {
-    width: 40%;
+    width: 60%;
+}
+
+.action_color_content {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    padding-top: 12px;
 }
 
 .guide-top {

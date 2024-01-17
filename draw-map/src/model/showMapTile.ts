@@ -20,6 +20,7 @@ export interface ShowMapTile {
 }
 
 export interface UserInfoSummary {
+    lvl?: number;
     nickName: string;
     // 普通
     chestNormal?: number;

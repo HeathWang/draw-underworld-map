@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {Button, Input, notification} from "antd";
+import {Button, Input, notification, Switch} from "antd";
 import {BossRoom, Gate, GemUnderWorldModel, MapBlock, TreasureRoom} from "../../model/gemUnderWorldModel";
 import {genShownMapTiles} from "../../logic/mapDataHandle";
 import {ShowMapTile, UserInfoSummary} from "../../model/showMapTile";
@@ -19,7 +19,12 @@ import {
     ArrowUpOutlined,
 } from '@ant-design/icons';
 import MapColorPicker from "../../uiComponent/colorPicker/mapColorPicker";
-import {CACHE_MAP_KEY, CACHE_MAP_TILES_KEY, CACHE_MAP_USER_INFO_KEY} from "../../const/mapInfoDefine";
+import {
+    CACHE_MAP_KEY,
+    CACHE_MAP_TILES_KEY,
+    CACHE_MAP_USER_INFO_KEY,
+    CACHE_SWITCH_MUL_COLOR
+} from "../../const/mapInfoDefine";
 import UserSummary from "./userSummary";
 
 const {TextArea} = Input;
@@ -30,6 +35,7 @@ const MapPage: React.FC = () => {
     const [showMapTiles, setShowMapTiles] = React.useState<ShowMapTile[]>([]);
     const [textAreaValue, setTextAreaValue] = React.useState<string>("");
     const [userSummary, setUserSummary] = React.useState<UserInfoSummary | null>(null);
+    const [isMultiColor, setIsMultiColor] = React.useState<boolean>(false);
 
     const notifyError = () => {
         notification.error({
@@ -52,6 +58,7 @@ const MapPage: React.FC = () => {
                 const firstNode = data.result.Info.UnderspireData.Completed[0];
                 const treasureRooms = data.result.Info.UnderspireData.TreasureRoomInfo;
                 const nickName = data.result.NewHeroData.Name;
+                const lvl = data.result.Info.PlayerLeaderboardEntry.Level;
 
                 let mapObj: MapBlock[] = [];
                 for (let i = 0; i < map.length; i++) {
@@ -119,7 +126,7 @@ const MapPage: React.FC = () => {
                 const results = genShownMapTiles(underWorldModel);
                 // console.log(`${JSON.stringify(showMapTiles, null, 2)}`);
                 setShowMapTiles(results.shownMapTiles);
-                getUserSummary(results.shownMapTiles, nickName);
+                getUserSummary(results.shownMapTiles, nickName, lvl);
                 localStorage.setItem(CACHE_MAP_TILES_KEY, JSON.stringify(results.shownMapTiles));
             } else {
                 notifyError();
@@ -133,7 +140,7 @@ const MapPage: React.FC = () => {
 
     }
 
-    const getUserSummary = (mapTiles: ShowMapTile[], nick: string) => {
+    const getUserSummary = (mapTiles: ShowMapTile[], nick: string, lvl?: number) => {
         let normal = 0;
         let unnormal = 0;
         let rare = 0;
@@ -159,6 +166,7 @@ const MapPage: React.FC = () => {
             }
         });
         const user: UserInfoSummary = {
+            lvl: lvl,
             nickName: nick,
             chestNormal: normal,
             chestUnNormal: unnormal,
@@ -191,6 +199,11 @@ const MapPage: React.FC = () => {
             setUserSummary(user);
         }
 
+        const isMulColor = localStorage.getItem(CACHE_SWITCH_MUL_COLOR);
+        if (isMulColor != null) {
+            setIsMultiColor(isMulColor === "true");
+        }
+
     }, []);
 
     const updateTile = (tile: ShowMapTile) => {
@@ -218,8 +231,8 @@ const MapPage: React.FC = () => {
         );
     }
 
-    const selectedTileColorChanged = (colorHex: string) => {
-      console.log(`selectedTileColorChanged: ${colorHex}`);
+    const selectedTileColorChanged = (colorHex: string, isMain = true) => {
+        console.log(`selectedTileColorChanged: ${colorHex} isMain: ${isMain}`);
         const newTiles = [...showMapTiles];
         newTiles.forEach((value, index, arr) => {
             if (value.selected === true) {
@@ -228,6 +241,11 @@ const MapPage: React.FC = () => {
         });
         setShowMapTiles(newTiles);
         localStorage.setItem(CACHE_MAP_TILES_KEY, JSON.stringify(newTiles));
+    }
+
+    const switchMulColor = (checked: boolean) => {
+        setIsMultiColor(checked);
+        localStorage.setItem(CACHE_SWITCH_MUL_COLOR, checked.toString());
     }
 
     const renderMap = () => {
@@ -272,7 +290,19 @@ const MapPage: React.FC = () => {
                 >
                     开始透视
                 </Button>
-                <MapColorPicker colorChangedCallback={selectedTileColorChanged} />
+                <div className="action_color_content">
+                    <div>是否开启多颜色选择</div>
+                    <Switch checked={isMultiColor}
+                            onChange={(checked: boolean, event: React.MouseEvent<HTMLButtonElement>) => {
+                                switchMulColor(checked);
+                            }}/>
+                    <MapColorPicker title={"主标记颜色"} isMain={true} colorChangedCallback={(color: string) => {
+                        selectedTileColorChanged(color, true)
+                    }}/>
+                    <MapColorPicker title={"副标记颜色"} colorChangedCallback={(color: string) => {
+                        selectedTileColorChanged(color, false)
+                    }}/>
+                </div>
                 {/*<Button onClick={testPath}>测试</Button>*/}
             </div>
 
@@ -283,7 +313,7 @@ const MapPage: React.FC = () => {
             }
             <div>
                 {
-                    userSummary != null && <UserSummary userSummary={userSummary} />
+                    userSummary != null && <UserSummary userSummary={userSummary}/>
                 }
             </div>
 
@@ -328,7 +358,7 @@ const MapPage: React.FC = () => {
                         <ArrowUpOutlined className="content-icon__dir"/>
                         <ArrowUpOutlined rotate={180} className="content-icon__dir"/>
                         <ArrowRightOutlined rotate={180} className="content-icon__dir"/>
-                        <ArrowRightOutlined className="content-icon__dir" />
+                        <ArrowRightOutlined className="content-icon__dir"/>
                     </div>
                 </div>
 

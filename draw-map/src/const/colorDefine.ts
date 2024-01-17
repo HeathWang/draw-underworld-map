@@ -1,6 +1,7 @@
 export {}
 
 export const COLOR_TILE_SELECTED = 'rgba(79,58,43,0.80)';
+export const COLOR_TILE_SELECTED_SECONDARY = 'rgba(255, 179, 0, 0.8176)';
 
 export const COLOR_TREASURE_NORMAL = "#aae3a7"
 
