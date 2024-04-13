@@ -2,7 +2,7 @@
   "name": "draw-map",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://HeathWang.github.io/draw-underworld-map",
+  "homepage": "https://heathwang.github.io/draw-underworld-map",
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
