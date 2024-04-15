@@ -49,7 +49,7 @@ const App: React.FC = () => {
                     群号:468647928 coding by 猴哥 NL
                 </div>
                 <div>
-                    <span>感谢BigBoom 大佬<span className="app-thanks-name">OpTiz</span>赞助的云服务器</span>
+                    <span>且用且珍惜。</span>
                 </div>
             </Footer>
         </Layout>

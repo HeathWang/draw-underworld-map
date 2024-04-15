@@ -180,6 +180,7 @@ const MapPage: React.FC = () => {
     }
 
     useEffect(() => {
+        document.title = "地图";
         console.log("useEffect");
         const input = localStorage.getItem('mapInput');
         if (input != null) {
