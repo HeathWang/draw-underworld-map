@@ -16,4 +16,5 @@ export const imageR = {
     yellow: "icons/yellow.png",
     red: "icons/red.png",
     gem: "icons/gem.png",
+    ikun: "icons/ikun.gif",
 }

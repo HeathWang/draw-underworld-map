@@ -52,6 +52,7 @@ const App: React.FC = () => {
                     <span>且用且珍惜。</span>
                 </div>
             </Footer>
+            <img src={'/icons/ikun.gif'} style={{position: 'fixed', top: 0, left: 0, width: 100, height: 100}} alt={"鸡你太美"}/>
         </Layout>
     );
 };
