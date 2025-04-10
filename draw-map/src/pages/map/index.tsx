@@ -317,13 +317,13 @@ const MapPage: React.FC = () => {
 
             <div className="map-tips">
                 <div className="map-tips__boss">
-                    <li>棕龙 100文书+铜球</li>
-                    <li>绿龙 皇契+SS钥匙</li>
-                    <li>蓝龙 3宝石钥匙+黄球</li>
-                    <li>紫龙 SS钥匙+银球</li>
-                    <li>黄龙 10诅咒符文+小篮球</li>
-                    <li>红龙 小红球+金球</li>
-                    <li>钻龙 50龙石+小爪牙</li>
+                    <li className="boss-brown">棕龙 100文书+铜球</li>
+                    <li className="boss-green">绿龙 皇契+SS钥匙</li>
+                    <li className="boss-blue">蓝龙 3宝石钥匙+黄球</li>
+                    <li className="boss-purple">紫龙 SS钥匙+银球</li>
+                    <li className="boss-yellow">黄龙 10诅咒符文+小篮球</li>
+                    <li className="boss-red">红龙 小红球+金球</li>
+                    <li className="boss-diamond">钻龙 50龙石+小爪牙</li>
                 </div>
 
                 <div className="map-tips__chest">
@@ -333,12 +333,12 @@ const MapPage: React.FC = () => {
                     </div>
                     <div className="map-tips__chest__sub">
                         <span>
-                            <span style={{background: COLOR_TREASURE_NORMAL_2}}>普通</span>、
-                            <span style={{background: COLOR_TREASURE_UNNORMAL}}>稀有</span>、
-                            <span style={{background: COLOR_TREASURE_RARE}}>罕见</span>、
-                            <span style={{background: COLOR_TREASURE_EPIC}}>史诗</span>、
-                            <span style={{background: COLOR_TREASURE_LEGEND}}>传奇</span>、
-                            <span style={{background: COLOR_TREASURE_MYTHIC}}>神话</span>以不同背景色标识</span>
+                            <span className="treasure-tag treasure-normal">普通</span>、
+                            <span className="treasure-tag treasure-unnormal">稀有</span>、
+                            <span className="treasure-tag treasure-rare">罕见</span>、
+                            <span className="treasure-tag treasure-epic">史诗</span>、
+                            <span className="treasure-tag treasure-legend">传奇</span>、
+                            <span className="treasure-tag treasure-mythic">神话</span>以不同背景色标识</span>
                     </div>
                 </div>
 
