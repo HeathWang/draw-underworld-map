@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {Button, Input, notification, Modal} from "antd";
+import {Button, Input, notification, Modal, Space} from "antd";
 import {BossRoom, Gate, GemUnderWorldModel, MapBlock, TreasureRoom} from "../../model/gemUnderWorldModel";
 import {genShownMapTiles} from "../../logic/mapDataHandle";
 import {ShowMapTile, UserInfoSummary} from "../../model/showMapTile";
@@ -271,9 +271,16 @@ const MapPage: React.FC = () => {
 
     return (
         <div>
-            <div style={{paddingBottom: "4px"}}>
-                <span> 请将抓包获取的json<span className="guide-top">数据全选</span>，粘贴到下面的输入框，点击开始透视按钮</span>
+            <div style={{ marginBottom: '8px', fontSize: '14px', lineHeight: '1.6' }}>
+                <span>
+                    请将抓包获取的json
+                    <span className="guide-top" style={{ fontWeight: 'bold', color: '#fa541c' }}>数据全选</span>
+                    ，粘贴到下面的输入框，点击
+                    <span style={{ fontWeight: 'bold' }}>开始透视</span>
+                    按钮
+                </span>
             </div>
+
             <TextArea
                 rows={4}
                 value={textAreaValue}
@@ -281,26 +288,35 @@ const MapPage: React.FC = () => {
                     inputRef.current = e.target.value;
                     setTextAreaValue(e.target.value);
                 }}
+                style={{ marginBottom: '16px' }}
             />
 
-
-            <div className="action">
-                <Button className="action__button" type={"primary"} size={"large"}
-                        onClick={handleInputData}
+            <Space className="action" size="middle" wrap style={{ marginBottom: '16px' }}>
+                <Button
+                    className="action__button"
+                    type="primary"
+                    size="large"
+                    style={{ minWidth: '120px' }}
+                    onClick={handleInputData}
                 >
                     开始透视
                 </Button>
-                <Button className="action__button" type={"primary"} size={"large"} style={{width: "140px"}}
-                        onClick={() => setIsModalOpen(true)}
+                <Button
+                    className="action__button"
+                    size="large"
+                    style={{ minWidth: '120px' }}
+                    onClick={() => setIsModalOpen(true)}
                 >
                     清除所有标记
                 </Button>
-                <MapColorPicker title={"标记颜色"} isMain={true} colorChangedCallback={(color: string) => {
-                    selectedTileColorChanged(color, true)
-                }}/>
-
-                {/*<Button onClick={testPath}>测试</Button>*/}
-            </div>
+                <MapColorPicker
+                    title="标记颜色"
+                    isMain={true}
+                    colorChangedCallback={(color: string) => {
+                        selectedTileColorChanged(color, true);
+                    }}
+                />
+            </Space>
 
 
             {showMapTiles != null && showMapTiles.length > 0 &&
