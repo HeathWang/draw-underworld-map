@@ -331,31 +331,36 @@ const MapPage: React.FC = () => {
                         宝箱分为普通、稀有、罕见、史诗、传奇、神话<img src={`${imageR.chest_treasure}`}
                                                                   style={{width: "20px", height: '20px'}} alt={""}/>
                     </div>
-                    <div className="map-tips__chest__sub">
+                    <div className="map-tips__chest__sub" style={{ fontSize: '12px' }}>
                         <span>
-                            <span className="treasure-tag treasure-normal">普通</span>、
-                            <span className="treasure-tag treasure-unnormal">稀有</span>、
-                            <span className="treasure-tag treasure-rare">罕见</span>、
-                            <span className="treasure-tag treasure-epic">史诗</span>、
-                            <span className="treasure-tag treasure-legend">传奇</span>、
-                            <span className="treasure-tag treasure-mythic">神话</span>以不同背景色标识</span>
+                            <span className="treasure-tag treasure-normal">普通</span>
+                            <span className="treasure-tag treasure-unnormal">稀有</span>
+                            <span className="treasure-tag treasure-rare">罕见</span>
+                            <span className="treasure-tag treasure-epic">史诗</span>
+                            <span className="treasure-tag treasure-legend">传奇</span>
+                            <span className="treasure-tag treasure-mythic">神话</span>以不同背景色标识
+                        </span>
                     </div>
                 </div>
 
                 <div className="map-tips__tag">
-                    <div>
-                        <span><span className="map-tips__tag__title">地图标记</span>：通过点击地图上的节点来标记</span>
-                    </div>
-                    <div>
-                        <span>点击标记后，节点以<span
-                            style={{background: COLOR_TILE_SELECTED, color: "white"}}>棕灰色背景</span>显示，再次点击取消标记</span>
-                    </div>
-                    <div>
-                        <span><span className="map-tips__tag__title">门朝向</span>：以箭头标识门下一步走向</span>
-                        <ArrowUpOutlined className="content-icon__dir"/>
-                        <ArrowUpOutlined rotate={180} className="content-icon__dir"/>
-                        <ArrowRightOutlined rotate={180} className="content-icon__dir"/>
-                        <ArrowRightOutlined className="content-icon__dir"/>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', fontSize: '13px' }}>
+                        <div>
+                            <span className="map-tips__tag__title">地图标记：</span>
+                            点击节点进行标记，再次点击取消
+                        </div>
+                        <div>
+                            <span className="map-tips__tag__title">标记颜色：</span>
+                            被标记节点将显示为
+                            <span style={{ background: COLOR_TILE_SELECTED, color: 'white', padding: '0 4px', margin: '0 4px', borderRadius: '2px' }}>棕灰色</span>
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '4px' }}>
+                            <span className="map-tips__tag__title">门方向：</span>
+                            <ArrowUpOutlined className="content-icon__dir" />
+                            <ArrowUpOutlined rotate={180} className="content-icon__dir" />
+                            <ArrowRightOutlined rotate={180} className="content-icon__dir" />
+                            <ArrowRightOutlined className="content-icon__dir" />
+                        </div>
                     </div>
                 </div>
             </div>
