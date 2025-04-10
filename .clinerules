@@ -1,0 +1,52 @@
+# Project Development Rules for draw-map
+# Always respond in Chinese if possible.
+
+## 1. Project Technology Architecture
+
+*   Frontend Framework: React (v18) for UI development.
+*   Language: TypeScript (strict mode enabled) for static typing.
+*   UI Component Library: Ant Design (Antd v5) for pre-built components.
+*   Routing: React Router (v6) for client-side navigation.
+*   State Management: Primarily component-level state (useState, useReducer) or Context API; no dedicated library specified.
+*   Build System: Create React App (`react-scripts`) for development, build, and testing.
+*   Styling: Modular CSS files per component/page (e.g., `styles.css`) and global styles (`index.css`, `App.css`).
+
+## 2. Project Structure Design
+
+The project uses a feature/page-based structure within `src`:
+
+*   `src/`: Root source directory.
+    *   `App.tsx`: Main application component (routing, layout).
+    *   `index.tsx`: Application entry point.
+    *   `index.css` / `App.css`: Global styles.
+    *   `const/`: Constant definitions (colors, map data).
+    *   `logic/`: Business logic, algorithms, data manipulation (pathfinding).
+    *   `model/`: TypeScript interfaces and types.
+    *   `pages/`: Page/feature components (e.g., `map`, `person`). Each includes `index.tsx` (main component) and `styles.css`. May contain nested component directories.
+    *   `resource/`: Static asset management/accessors (image paths).
+    *   `router/`: Application route definitions (`AppRoutes.tsx`).
+    *   `uiComponent/`: Reusable, generic UI components (e.g., `colorMenu`).
+*   `public/`: Static assets served directly.
+*   `functions/`: Likely for serverless functions (inferred from `cloudbaserc.json`).
+
+## 3. Project Technology Stack
+
+*   Core: React 18, React DOM 18
+*   Language: TypeScript 4.x
+*   UI: Ant Design 5.x
+*   Routing: React Router DOM 6.x
+*   Build/Dev: Create React App (`react-scripts` 5.x)
+*   Testing: React Testing Library, Jest (via CRA)
+*   Linting: ESLint (`react-app` preset)
+*   Deployment: gh-pages
+*   Types: `@types/*` packages
+
+## 4. Development Guidelines
+
+*   Coding Style: Follow ESLint rules (`react-app` preset) and TypeScript best practices.
+*   Component Structure: Use functional components with Hooks. Keep components focused and reusable. Place page-specific components in `pages/` and generic ones in `uiComponent/`.
+*   Styling: Use modular CSS (`styles.css` per component/page). Leverage Ant Design components and customization.
+*   State Management: Use local state (`useState`, `useReducer`) primarily. Use Context API for shared global state if necessary.
+*   API Interaction: Define clear patterns if backend interaction is added.
+*   Testing: Write unit/integration tests with React Testing Library.
+*   Version Control: Use Git. Consider conventional commit messages.
