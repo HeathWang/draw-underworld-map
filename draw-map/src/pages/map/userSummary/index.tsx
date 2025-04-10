@@ -51,13 +51,13 @@ const UserSummary: React.FC<UserSummaryProps> = (props) => {
             <div>
                 <span className="user-summary-chest">
                     其中<span
-                    style={{background: COLOR_TREASURE_NORMAL_2}}>普通宝箱{props.userSummary.chestNormal}个</span>，
+                    style={{background: COLOR_TREASURE_NORMAL_2}}>普通宝箱{props.userSummary.chestNormal}个</span>
                     <span
-                        style={{background: COLOR_TREASURE_UNNORMAL}}>稀有宝箱{props.userSummary.chestUnNormal}个</span>，
-                    <span style={{background: COLOR_TREASURE_RARE}}>罕见宝箱{props.userSummary.chestRare}个</span>，
-                    <span style={{background: COLOR_TREASURE_EPIC}}>史诗宝箱{props.userSummary.chestEpic}个</span>，
-                    <span style={{background: COLOR_TREASURE_LEGEND}}>传奇宝箱{props.userSummary.chestLegend}个</span>，
-                    <span style={{background: COLOR_TREASURE_MYTHIC}}>神话宝箱{props.userSummary.chestMythic}个</span>。
+                        style={{background: COLOR_TREASURE_UNNORMAL}}>稀有宝箱{props.userSummary.chestUnNormal}个</span>
+                    <span style={{background: COLOR_TREASURE_RARE}}>罕见宝箱{props.userSummary.chestRare}个</span>
+                    <span style={{background: COLOR_TREASURE_EPIC}}>史诗宝箱{props.userSummary.chestEpic}个</span>
+                    <span style={{background: COLOR_TREASURE_LEGEND}}>传奇宝箱{props.userSummary.chestLegend}个</span>
+                    <span style={{background: COLOR_TREASURE_MYTHIC}}>神话宝箱{props.userSummary.chestMythic}个</span>
                 </span>
             </div>
             <div>
