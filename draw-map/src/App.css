@@ -1,3 +1,34 @@
+/* Keep global styles if needed, otherwise remove */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* Styles for the main content area inside Content */
+.main-content-wrapper {
+  padding: 24px; /* Add internal padding */
+  border-radius: 8px; /* Optional: Add rounded corners */
+  min-height: 280px; /* Ensure it has some minimum height */
+  /* background is set inline via theme token */
+}
+
+/* Optional: Add specific styles for the Tabs if needed */
+.main-tabs .ant-tabs-tab {
+  /* Example: Increase tab font size */
+  /* font-size: 16px; */
+}
+
+/* Remove old styles that are no longer used */
+/*
 .App {
     text-align: center;
 }
@@ -31,5 +62,4 @@
     font-weight: bold;
     color: #ea1212;
 }
-
-
+*/
