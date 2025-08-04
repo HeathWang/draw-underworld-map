@@ -50,14 +50,29 @@ const MapPage: React.FC = () => {
             localStorage.setItem(CACHE_MAP_KEY, inputRef.current ?? "");
             if (inputRef.current != null) {
                 const data = JSON.parse(inputRef.current);
-                console.log(data.result.Info.UnderspireData);
-                const map = data.result.Info.UnderspireData.Map;
-                const gates = data.result.Info.UnderspireData.Gates;
-                const bossRoomInfo = data.result.Info.UnderspireData.BossRoomInfo;
-                const firstNode = data.result.Info.UnderspireData.Completed[0];
-                const treasureRooms = data.result.Info.UnderspireData.TreasureRoomInfo;
-                const nickName = data.result.NewHeroData.Name;
-                const lvl = data.result.Info.PlayerLeaderboardEntry.Level;
+
+                // 防御性获取关键节点
+                const info = data?.result?.Info;
+                const newHeroData = data?.result?.NewHeroData;
+                const under = info?.UnderspireData;
+
+                if (!under || !under.Map || !under.Gates || !under.BossRoomInfo || !under.Completed) {
+                    notifyError();
+                    setShowMapTiles([]);
+                    return;
+                }
+
+                const map = under.Map as number[][];
+                const gates = under.Gates as Record<string, { Dir: number; Node: number }>;
+                const bossRoomInfo = under.BossRoomInfo as Record<string, number>;
+                const completed = under.Completed as number[];
+                const treasureRooms = under.TreasureRoomInfo as Record<string, number> | undefined;
+
+                const firstNode = completed[0];
+                const nickName = newHeroData?.Name ?? "未知昵称";
+
+                // 新版 PlayerLeaderboardEntry 可能为 null，不再读取 Level
+                const lvl = undefined as number | undefined;
 
                 let mapObj: MapBlock[] = [];
                 for (let i = 0; i < map.length; i++) {
@@ -70,43 +85,42 @@ const MapPage: React.FC = () => {
                     }
                 }
 
-                // console.log(`mapObj: ${JSON.stringify(mapObj)}`);
-
+                // 规范遍历 Gates：它是对象，键为字符串
                 let gatesObj: Gate[] = [];
-                for (let i = 0; i < Object.keys(gates).length; i++) {
-                    const gate = gates[i];
-                    gatesObj.push({
-                        index: i,
-                        node: gate.Node,
-                        dir: gate.Dir
-                    });
-                }
-                // console.log(`gateObj: ${JSON.stringify(gatesObj)}`);
+                Object.keys(gates).forEach((key) => {
+                    const gate = gates[key];
+                    if (gate && typeof gate.Node === "number" && typeof gate.Dir === "number") {
+                        gatesObj.push({
+                            index: Number.isNaN(Number(key)) ? gatesObj.length : parseInt(key, 10),
+                            node: gate.Node,
+                            dir: gate.Dir
+                        });
+                    }
+                });
 
                 let bossRoomObj: BossRoom[] = [];
                 const bossRoomKeys = Object.keys(bossRoomInfo);
                 for (let i = 0; i < bossRoomKeys.length; i++) {
-                    const roomValue = bossRoomInfo[bossRoomKeys[i]];
+                    const roomKey = bossRoomKeys[i];
+                    const roomValue = bossRoomInfo[roomKey];
                     bossRoomObj.push({
                         category: roomValue,
-                        node: parseInt(bossRoomKeys[i])
-
+                        node: parseInt(roomKey, 10)
                     });
                 }
-                // console.log(`bossRoomObj: ${JSON.stringify(bossRoomObj)}`);
 
                 let treasureRoomObj: TreasureRoom[] = [];
-                const treasureRoomKeys = Object.keys(treasureRooms);
-                for (let i = 0; i < treasureRoomKeys.length; i++) {
-                    const roomValue = treasureRooms[treasureRoomKeys[i]];
-                    treasureRoomObj.push({
-                        category: roomValue,
-                        node: parseInt(treasureRoomKeys[i])
-
-                    });
+                if (treasureRooms) {
+                    const treasureRoomKeys = Object.keys(treasureRooms);
+                    for (let i = 0; i < treasureRoomKeys.length; i++) {
+                        const roomKey = treasureRoomKeys[i];
+                        const roomValue = treasureRooms[roomKey];
+                        treasureRoomObj.push({
+                            category: roomValue,
+                            node: parseInt(roomKey, 10)
+                        });
+                    }
                 }
-                // console.log(`treasureRoomObj: ${JSON.stringify(treasureRoomObj)}`);
-
 
                 const underWorldModel: GemUnderWorldModel = {
                     map: mapObj,
@@ -123,7 +137,6 @@ const MapPage: React.FC = () => {
                 }
 
                 const results = genShownMapTiles(underWorldModel);
-                // console.log(`${JSON.stringify(showMapTiles, null, 2)}`);
                 setShowMapTiles(results.shownMapTiles);
                 getUserSummary(results.shownMapTiles, nickName, lvl);
                 localStorage.setItem(CACHE_MAP_TILES_KEY, JSON.stringify(results.shownMapTiles));
